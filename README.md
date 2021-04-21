@@ -7,3 +7,13 @@
 4. UI to display the data in some kind of maps and graphs/plots
 5. We need to run the data on MRC using ansible 
 6. Docker to deploy multiple containers for same operations -> like for fetching data
+
+
+
+| Tasks                       |   Owner             |
+| UI                          | Ezequiel & Soham    |
+| Fetching Twitter Data       | Trina               |
+| NLP Analysis                | Ankita & Hilary     |
+| Couch DB & Backend API      | Ankita & Trina      |
+| Ansible + MRC + Couch DB    | Soham & Ezequiel    |
+| Docker                      | Trina               |
