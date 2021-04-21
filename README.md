@@ -1,4 +1,6 @@
 # COMP90024_Assignment2
+Author(s): Ankita Dhar, Ezequiel Gallo, Hillary McMeckan, Soham Mandal, Trina Dey   
+Date: 20 Mar 2021
 
 ## Tasks 
 1. Fetch Data from Twitter from multiple account
@@ -11,6 +13,7 @@
 
 
 | Tasks                       |   Owner             |
+| --------------------------- |:-------------------:|
 | UI                          | Ezequiel & Soham    |
 | Fetching Twitter Data       | Trina               |
 | NLP Analysis                | Ankita & Hilary     |
