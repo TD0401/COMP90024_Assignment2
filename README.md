@@ -19,4 +19,4 @@ Date: 21 Apr 2021
 | NLP Analysis                | Ankita & Hilary     |
 | Couch DB & Backend API      | Ankita & Trina      |
 | Ansible + MRC + Couch DB    | Soham & Ezequiel    |
-| Docker                      | Trina               |
+| Docker                      | Trina & Ankita             |
