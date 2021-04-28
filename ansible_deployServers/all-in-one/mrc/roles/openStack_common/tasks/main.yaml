@@ -1,0 +1,31 @@
+# Install deopendencies on the host
+- name: Install pip
+  become: yes
+  apt:
+    name: ['python-pip']
+    state: lastest
+    update_cache: yes
+  when: ansible_distribution == "Ubuntu"
+
+# this is equivalent to sudo apt-get update; sudo apt-get install python-pip
+
+- name: Update pip
+  pip:
+    name: ['pip']
+    state: lastest
+
+# pip install --upgrade pip
+
+- name: Install openstacksdk
+  pip:
+    name: ['openstacksdk']
+    state: latest
+# pip install openstacksdk
+
+
+- name: Install tweepy
+  pip:
+    name: ['tweepy']
+    state: latest
+
+# pip install tweepy

@@ -1,0 +1,30 @@
+# create an instance on MRC
+- name: create an instance
+  os_server:
+    name: '{{ item.name }}'
+    image: '{{ instance_image }}'
+    key_name: '{{ instance_key_name }}'
+    flavour: '{{ instance_flavour }}'
+    availability_zone: '{{ availability_zone }}'
+    security_groups: '{{ sg_names }}'
+    volumes: '{{ item.volumes }}'
+    auto_floating_ip: yes
+    wait: yes
+    timeout: 600
+    state: present
+  loop: '{{ instances }}'
+  register: os_instance
+
+- debug:
+    msg: "Intances {{ item.openstack.name }} created. IP address {{ item.openstack.ip }}"
+  loop: '{{ os_instance.results }}'
+  when: item.openstack is defined
+
+- name: wait for conn
+  wait_for: 
+    host: "{{ item.openstack.public_v4 }}"
+    port: 22
+    timeout: 120
+    search_regex: OpenSSH
+  loop: '{{ os_instances.results }}'
+  when: item.openstack is defined

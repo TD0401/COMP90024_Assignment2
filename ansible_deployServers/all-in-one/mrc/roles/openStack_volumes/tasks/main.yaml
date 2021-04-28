@@ -1,0 +1,20 @@
+# Create volumes for vars
+- name: create vol on MRC
+  os_volume:
+    display_name: '{{ item.vol_name }}'
+    size: '{{ item.vol_size }}'
+    availablity_zone: '{{ availability_zone }}'
+    wait: yes
+    timeout: 600
+    state: present
+  loop: '{{ volumes }}'
+  register: os_vol
+
+# get vol_id and rerurn value of os_volume
+- name: vol_id_list
+  set_facts:
+    os_vol_id: '{{ os_vol_ids|default([]) + [ item.id ] }}'
+  loop: '{{ os_vol.results }}'
+
+- debug:
+    msg: "volume {{ os_vol_ids }} has been created"
