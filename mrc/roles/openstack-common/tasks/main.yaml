@@ -1,18 +1,19 @@
+---
 # Install deopendencies on the host
 - name: Install pip
   become: yes
   apt:
-    name: ['python-pip']
-    state: lastest
+    name: ['python3-pip']
+    state: latest
     update_cache: yes
   when: ansible_distribution == "Ubuntu"
 
-# this is equivalent to sudo apt-get update; sudo apt-get install python-pip
+# This is equivalent to sudo apt-get update; sudo apt-get install python-pip
 
 - name: Update pip
   pip:
     name: ['pip']
-    state: lastest
+    state: latest
 
 # pip install --upgrade pip
 
@@ -27,5 +28,4 @@
   pip:
     name: ['tweepy']
     state: latest
-
 # pip install tweepy

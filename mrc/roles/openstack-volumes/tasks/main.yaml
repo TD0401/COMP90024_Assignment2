@@ -1,3 +1,4 @@
+---
 # Create volumes for vars
 - name: create vol on MRC
   os_volume:
@@ -12,7 +13,7 @@
 
 # get vol_id and rerurn value of os_volume
 - name: vol_id_list
-  set_facts:
+  set_fact:
     os_vol_id: '{{ os_vol_ids|default([]) + [ item.id ] }}'
   loop: '{{ os_vol.results }}'
 

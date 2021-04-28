@@ -1,3 +1,4 @@
+---
 # create an instance on MRC
 - name: create an instance
   os_server:
