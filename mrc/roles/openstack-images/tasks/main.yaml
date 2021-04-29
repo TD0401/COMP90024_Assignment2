@@ -1,5 +1,5 @@
 ---
-# images
+# ignore
 - name: get all images
   os_image_info:
   register: image_result

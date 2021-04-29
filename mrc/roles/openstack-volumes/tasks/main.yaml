@@ -4,7 +4,7 @@
   os_volume:
     display_name: '{{ item.vol_name }}'
     size: '{{ item.vol_size }}'
-    availablity_zone: '{{ availability_zone }}'
+    availability_zone: '{{ availability_zone }}'
     wait: yes
     timeout: 600
     state: present
@@ -14,7 +14,7 @@
 # get vol_id and rerurn value of os_volume
 - name: vol_id_list
   set_fact:
-    os_vol_id: '{{ os_vol_ids|default([]) + [ item.id ] }}'
+    os_vol_ids: '{{ os_vol_ids|default([]) + [ item.id ] }}'
   loop: '{{ os_vol.results }}'
 
 - debug:

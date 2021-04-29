@@ -8,9 +8,9 @@ volumes:
     vol_size: 50
   - vol_name: database-2
     vol_size: 50
-  - vol_name: frontend-1
+  - vol_name: analysis
     vol_size: 20
-  - vol_name: analysis-1
+  - vol_name: frontend
     vol_size: 20
 
 # Security group
@@ -35,13 +35,13 @@ security_groups:
 instances:
   - name: mrc-inst-couchDB
     volume: ['database-1']
-  - name: mrc-inst-couchDB
+  - name: mrc-inst-reCouchDB
     volume: ['database-2']
   - name: mrc-inst-analysis
-    volume: ['analysis-1']
+    volume: ['analysis']
   - name: mrc-inst-frontend
-    volume: ['frontend-1']  
+    volume: ['frontend']  
 
 instance_image: f8b79936-6616-4a22-b55d-0d0a1d27bceb
-instance_key_name: demo-1 
-instance_flavour: uom.general.2c8g
+instance_key_name: demo-1
+instance_flavour: uom.mse.2c9g

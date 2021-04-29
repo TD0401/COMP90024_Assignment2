@@ -19,7 +19,7 @@
 
 - name: Install openstacksdk
   pip:
-    name: ['openstacksdk']
+    name: ['openstacksdk==0.52']
     state: latest
 # pip install openstacksdk
 
