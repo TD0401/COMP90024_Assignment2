@@ -5,10 +5,10 @@
     name: '{{ item.name }}'
     image: '{{ instance_image }}'
     key_name: '{{ instance_key_name }}'
-    flavour: '{{ instance_flavour }}'
+    flavor: '{{ item.instance_flavor }}'
     availability_zone: '{{ availability_zone }}'
     security_groups: '{{ sg_names }}'
-    volumes: '{{ item.volumes }}'
+    volumes: '{{ item.volume }}'
     auto_floating_ip: yes
     wait: yes
     timeout: 600
@@ -17,7 +17,7 @@
   register: os_instance
 
 - debug:
-    msg: "Intances {{ item.openstack.name }} created. IP address {{ item.openstack.ip }}"
+    msg: "Intances {{ item.openstack.name }} created. IP address {{ item.openstack.public_v4 }}"
   loop: '{{ os_instance.results }}'
   when: item.openstack is defined
 

@@ -11,5 +11,4 @@
     - role: openstack-volumes
     - role: openstack-security-groups
     - role: openstack-instances
-    - role: openstack-volume-snapshot
      
