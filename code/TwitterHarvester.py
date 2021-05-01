@@ -10,17 +10,67 @@ token_list = [
         "ACCESS_TOKEN": "1382216257299095553-UFdedtyG9RMYPpJ5hrDi0bHaeBFsre",
         "ACCESS_TOKEN_SECRET": "aCTcoaD02YvgRBVHqvpupl51c26cpgB7MLqGNvjTdgYHY",
         "CONSUMER_KEY": "HzSYdI0t164WwtK6VI9WkVgn0",
-        "CONSUMER_SECRET": "4RDA9ZUsl0soZwePswYrF1hKWmZQRKfeAnG2hbTlR5IpJC4v3y"
+        "CONSUMER_SECRET": "4RDA9ZUsl0soZwePswYrF1hKWmZQRKfeAnG2hbTlR5IpJC4v3y",
+        "GEO":"37.8136,144.9631,300km",
+        "GEO_NAME":"MELBOURNE"
     },
     {
         "ACCOUNT_NAME": "SM1",
         "ACCESS_TOKEN": "1385176748229160963-lAKIZyu6S4IWbGJ3PlWaj42Vib6KHl",
         "ACCESS_TOKEN_SECRET": "Uf3dPXCJ2eJE2MyHKX4qInSJJacQkFhz1pssESk5L4xfb",
         "CONSUMER_KEY": "1TWIf5dxovtRAgsewLnAMswVf",
-        "CONSUMER_SECRET": "4Fqys3SJKUaXIs929qKxS6nLJI6hLkgmid5ugn1CrlrHuAtNQ2"
+        "CONSUMER_SECRET": "4Fqys3SJKUaXIs929qKxS6nLJI6hLkgmid5ugn1CrlrHuAtNQ2",
+        "GEO": "37.8136,144.9631,300km",
+        "GEO_NAME": "ADELAIDE"
+    },
+    {
+        "ACCOUNT_NAME": "EG1",
+        "ACCESS_TOKEN": "1382859648613507072-8LT5wgyUWM15f1hPb4YemPY6nrONN4",
+        "ACCESS_TOKEN_SECRET": "ki18Lz1taArtHKVmrfmTzgNqkzhUlj6abJ1m5HNgSqc7T",
+        "CONSUMER_KEY": "IvftZ2VAvxMN2KTIO9VkfmArA",
+        "CONSUMER_SECRET": "q6VDoNdo4IdxuHyBy60SVkpwsu0ImQsmvbUi6reZbOcXfsuHGo",
+        "GEO": "37.8136,144.9631,300km",
+        "GEO_NAME": "SYDNEY"
+    },
+    {
+        "ACCOUNT_NAME": "HM1",
+        "ACCESS_TOKEN": "1387920378123591681-snwmk8qdEiOHxv0NUgi2xIf8g8TfyO",
+        "ACCESS_TOKEN_SECRET": "oREGZrMLSthOHZo3Ss4nBa4Vczcp2Z5QndTMsxOjwA39n",
+        "CONSUMER_KEY": "7xuNIF1O0V7qZ2wD1Vtw6FgEf",
+        "CONSUMER_SECRET": "978A7k7jjBdRsiVyfRiSBIFfKKsBwEMvEatOgSN0liljvlGULr",
+        "GEO": "37.8136,144.9631,300km",
+        "GEO_NAME": "PERTH"
+    },
+    {
+        "ACCOUNT_NAME": "HM2",
+        "ACCESS_TOKEN": "2383562348-sGkphwZZf9f6fd1mudq5rLkB6uw7jlDjKY3aFpR",
+        "ACCESS_TOKEN_SECRET": "XTLo3R8nwrAwRp1CIhHsBQ6ZIdS10RfxGlN7pCcLD2ojp",
+        "CONSUMER_KEY": "QIfwUNGd1QUmSFG1YzNjR46ST",
+        "CONSUMER_SECRET": "qyGwFSmCN3B38a9zbGh2MTfj3LiwQqaNr2wfSY4gl4ANT9vKtc",
+        "GEO": "37.8136,144.9631,300km",
+        "GEO_NAME": "BRISBANE"
+    },
+    {
+        "ACCOUNT_NAME": "AD1",
+        "ACCESS_TOKEN": "1388170110330806273-Vfxp4sE6mJNduZaA6WcgNiEkM20mfP",
+        "ACCESS_TOKEN_SECRET": "LL89KuRd89IbmWmkyL4AKc2gDEGuy9MwjnNHWCFajRc1F",
+        "CONSUMER_KEY": "IpYRKJ5BY42oQL9hmHxtTEyq5",
+        "CONSUMER_SECRET": "LS5qy6yK3AZROZfK1a6VIYHVTk3ud32DnqlxUFlJ9pfF13njKr",
+        "GEO": "37.8136,144.9631,300km",
+        "GEO_NAME": "ADELAIDE"
+    },
+    {
+        "ACCOUNT_NAME": "SM2",
+        "ACCESS_TOKEN": "1037915277260804102-179ZUFODI6ShQDVLMZpMr3XlniHY2M",
+        "ACCESS_TOKEN_SECRET": "CyrVLUzPDSEOlScOO6xzJfR7XYBJuBV3j1ksRDpljlJCa",
+        "CONSUMER_KEY": "ZRTNsGfjmBKZk6UWKgKgLCuOp",
+        "CONSUMER_SECRET": "AaFOLb2k5ZZLcV516Ht1cS8BeusN9B1GddFuMH82tc8t4YkAhP",
+        "GEO": "37.8136,144.9631,300km",
+        "GEO_NAME": "ADELAIDE"
     }
 ]
 COUCH_URL = "http://admin:password@127.0.0.1:5984/"
+LOOP_COUNT=1
 
 
 def parse_and_store(db, tweet_json, index):
@@ -32,32 +82,54 @@ def parse_and_store(db, tweet_json, index):
     :return: None
     """
 
-    id = tweet_json['id']
-    db.save({'_id': "partition" + str(index) + ":" + str(id), 'result': json.dumps(tweet_json)})
-    print(tweet_json)
+
+    try:
+        id = tweet_json['id']
+        json_data = {'_id': "partition" + str(index) + ":" + str(id),
+                    'created_at':tweet_json['created_at'],
+                     'tweet_text':tweet_json['text']
+                     ## TODO: need to complete the json part
+        }
+        db.save(json_data)
+        print(tweet_json)
+    except:
+        print('Error in saving in DB')
 
 
-def fetch_tweet_data(db):
+def fetch_tweet_data(db, db2, last_fetched_id):
     """
     This function iterates on various accounts and fetches the data from twitter
     :param db: couch db single instance connection
     :return: None
     """
-
+    dbFoundLastFetched = True
+    if last_fetched_id is None:
+        dbFoundLastFetched = False
     index = 0
     for tokens in token_list:
         try:
             index += 1
+            index = index % 5
             auth = tweepy.OAuthHandler(tokens["CONSUMER_KEY"], tokens["CONSUMER_SECRET"])
             auth.set_access_token(tokens["ACCESS_TOKEN"], tokens["ACCESS_TOKEN_SECRET"])
 
             api = tweepy.API(auth, wait_on_rate_limit=True)
-            g = "37.8136,144.9631,300km"
-            # search_words = ["#covid19", "2020", "lockdown"]
-            stats = tweepy.Cursor(api.search, geocode=g, lang="en", until="2021-04-21", count=1).items(1)
+            stats = None
+            #if dbFoundLastFetched:
+            #    stats = tweepy.Cursor(api.search, geocode=tokens["GEO"], lang="en",  count=LOOP_COUNT).items(LOOP_COUNT)
+            #else:
+            stats = tweepy.Cursor(api.search, geocode=tokens["GEO"], lang="en", since_id=last_fetched_id,
+                                          count=LOOP_COUNT).items(LOOP_COUNT)
             for s in stats:
                 parse_and_store(db, s._json, index)
-        except :
+                last_fetched_id = s._json['id']
+
+            if dbFoundLastFetched:
+                db2.update({'_id': "last_fetched_id" , 'result': last_fetched_id})
+            else:
+                db2.save({'_id': "last_fetched_id", 'result': last_fetched_id})
+                dbFoundLastFetched = True
+        except:
             print("Error in loop for account name  : " + tokens["ACCOUNT_NAME"])
 
 
@@ -69,11 +141,15 @@ def main():
     """
     couch = couchdb.Server(COUCH_URL)
     db = couch["twitterfeed"]
+    db2 = couch["parsed_data"]
+    last_fetched_id = None
     try:
-        count = 0
-        while count < 3333:
-            count += 1
-            fetch_tweet_data(db)
+        last_fetched_id = couch["parsed_data"].get("last_fetched_id")["result"]
+    except:
+        print("last fetched twitter id not found, keeping it null")
+    try:
+        while True:
+            fetch_tweet_data(db,db2, last_fetched_id)
             time.sleep(15 * 60)
     except:
         print("Error")
