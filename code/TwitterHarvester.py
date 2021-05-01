@@ -98,8 +98,6 @@ def parse_and_store(db, tweet_json, index):
         json_data = {'_id': "partition" + str(index) + ":" + str(id),
                     'created_at':tweet_json['created_at'],
                      'text':tweet_json['text']
-                     'hashtags':tweet_json['hastag']
-                     "[user:id]":tweet_json['usr_id']
                      ## TODO: need to complete the json part
         }
         db.save(json_data)

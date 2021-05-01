@@ -3,7 +3,7 @@
 - name: Install pip
   become: yes
   apt:
-    name: ['python3-pip']
+    name: ['python3-pip', 'apt-transport-https', 'curl']
     state: latest
     update_cache: yes
   when: ansible_distribution == "Ubuntu"
