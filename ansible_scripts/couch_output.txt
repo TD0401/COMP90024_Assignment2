@@ -1,0 +1,13 @@
+
+PLAY [localhost] ***************************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [localhost]
+
+TASK [openstack-couchDB-common : Install pip] **********************************
+ok: [localhost]
+
+TASK [openstack-couchDB-common : Update pip] ***********************************
+ok: [localhost]
+
+TASK [openstack-couchDB-common : Install openstacksdk] *************************
