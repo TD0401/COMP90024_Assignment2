@@ -2,6 +2,7 @@
 - hosts: localhost
   vars:
     ansible_python_interpreter: /usr/bin/python3
+  # change the interpreter location acc. to on your sys
   vars_files:
     - host_vars/group-1-couchdb.yaml
   gather_facts: true
@@ -11,4 +12,3 @@
     - role: openstack-couchDB-volumes
     - role: openstack-couchDB-security-groups
     - role: openstack-couchDB-instances
-     

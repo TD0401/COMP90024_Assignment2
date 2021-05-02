@@ -4,7 +4,7 @@ availability_zone: melbourne-qh2-uom
 
 # Volumes
 volumes:
-  - vol_name: analysis-vol
+  - vol_name: harvester-vol
     vol_size: 50
   - vol_name: frontend-vol
     vol_size: 20
@@ -36,8 +36,8 @@ security_groups:
 
 # Instances
 instances:
-  - name: analysis-instance
-    volume: ['analysis-vol']
+  - name: harvester-instance
+    volume: ['harvester-vol']
     instance_flavor: uom.mse.2c9g
   - name: frontend-instance
     volume: ['frontend-vol']

@@ -11,3 +11,4 @@
     - role: instance-volumes
     - role: instance-security-groups
     - role: instance-instances
+    - role: docker-install
