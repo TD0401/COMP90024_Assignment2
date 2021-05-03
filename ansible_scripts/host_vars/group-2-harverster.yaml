@@ -4,8 +4,8 @@ availability_zone: melbourne-qh2-uom
 
 # Volumes
 volumes:
-  - vol_name: harvester-vol
-    vol_size: 50
+#  - vol_name: harvester-vol
+#    vol_size: 50
   - vol_name: frontend-vol
     vol_size: 20
   
@@ -17,6 +17,7 @@ security_groups:
     protocol: tcp
     port_range_min: 22
     port_range_max: 22
+    direction: ingress
     remote_ip_prefix: 0.0.0.0/0
       
   - name: http
@@ -24,6 +25,7 @@ security_groups:
     protocol: tcp
     port_range_min: 80
     port_range_max: 80
+    direction: ingress
     remote_ip_prefix: 0.0.0.0/0
   
   - name: https
@@ -31,14 +33,15 @@ security_groups:
     protocol: tcp
     port_range_min: 443
     port_range_max: 443
+    direction: ingress
     remote_ip_prefix: 0.0.0.0/0
   
 
 # Instances
 instances:
-  - name: harvester-instance
-    volume: ['harvester-vol']
-    instance_flavor: uom.mse.2c9g
+#  - name: harvester-instance
+#    volume: ['harvester-vol']
+#    instance_flavor: uom.mse.2c9g
   - name: frontend-instance
     volume: ['frontend-vol']
     instance_flavor: uom.mse.1c4g

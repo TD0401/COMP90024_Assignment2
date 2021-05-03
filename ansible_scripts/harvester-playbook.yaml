@@ -1,0 +1,14 @@
+---
+- hosts: localhost
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+  vars_files:
+    - host_vars/group-2-harvester.yaml
+  gather_facts: true
+
+  roles:
+    - role: harvester-common
+    - role: harvester-volumes
+    - role: harvester-security-groups
+    - role: harvester-instances
+    - role: harvester-docker-install

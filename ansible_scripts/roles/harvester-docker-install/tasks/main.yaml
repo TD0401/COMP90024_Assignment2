@@ -25,28 +25,19 @@
 - name: Add docker apt repo key and update cache
   tags: 'docker'
   become: yes
-  apt_repository: "deb http://download.docker.com/linux/ubuntu bionic stable"
-    repo:
+  apt_repository: 
+    repo: "deb http://download.docker.com/linux/ubuntu/ focal stable"
     mode: '644'
     update_cache: yes
     state: present
 
 - name: Install docker
-  tags: 'docker'
-  become: yes
-  apt:
-    name: ['docket-ce']
-    state: latest
-    install_recommends: no
-    update_cache: yes
+  pip:
+    name: docker
 
-- name: Install docker-compose
-  tags: 'docker'
-  become: yes
-  apt:
-    name: ['docket-compose']
-    state: latest
-
+- name: Install docker_compose
+  pip:
+    name: docker-compose
 
 
 

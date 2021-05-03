@@ -1,2 +1,36 @@
 ---
-- 
+- name: install dependencies
+  tags: 'couchDB'
+  become: yes
+  apt:
+    name: ['pkg-config','apt-transport-https', 'build-essential', 'ca-certificates', 'curl', 'python3-dev','python3-pip', 'python3-setuptools', 'software-properties-common', 'unzip', 'vim']
+    state: latest
+    install_recommends: no
+    update_cache: yes
+
+- name: add apt repo key
+  tags: 'couchdb'
+  become: yes
+  apt_key:
+    url: https://couchdb.apache.org/repo/keys.asc
+    state: present
+
+- name: add couchdb repo key and update cache
+  tags: 'couchdb'
+  become: yes
+  apt_repository:
+    repo: "deb https://apache.jfrog.io/artifactory/couchdb-deb/ focal main"
+    mode: '644'
+    update_cache: yes
+    state: present
+
+- name: add couchdb PPA repository
+  become: yes
+  apt_repository:
+    repo: ppa:couchdb/stable
+
+- name: install couchdb
+  tags: 'couchDB'
+  become: yes
+  pip: 
+    name: couchdb
