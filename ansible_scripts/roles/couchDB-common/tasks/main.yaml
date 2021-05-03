@@ -24,8 +24,4 @@
 # pip install openstacksdk
 
 
-- name: Install tweepy
-  pip:
-    name: ['tweepy']
-    state: latest
-# pip install tweepy
+

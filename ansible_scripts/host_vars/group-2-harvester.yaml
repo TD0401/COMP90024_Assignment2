@@ -4,10 +4,10 @@ availability_zone: melbourne-qh2-uom
 
 # Volumes
 volumes:
-#  - vol_name: harvester-vol
-#    vol_size: 50
-  - vol_name: frontend-vol
-    vol_size: 20
+  - vol_name: harvester-vol
+    vol_size: 50
+#  - vol_name: frontend-vol
+#    vol_size: 20
   
 
 # Security group
@@ -39,12 +39,12 @@ security_groups:
 
 # Instances
 instances:
-#  - name: harvester-instance
-#    volume: ['harvester-vol']
-#    instance_flavor: uom.mse.2c9g
-  - name: frontend-instance
-    volume: ['frontend-vol']
-    instance_flavor: uom.mse.1c4g
+  - name: harvester-instance
+    volume: ['harvester-vol']
+    instance_flavor: uom.mse.2c9g
+#  - name: frontend-instance
+#    volume: ['frontend-vol']
+#    instance_flavor: uom.mse.1c4g
 
 instance_image: f8b79936-6616-4a22-b55d-0d0a1d27bceb
 instance_key_name: new_key_sm
