@@ -1,0 +1,8 @@
+version: '3.9'
+
+services:
+  harvester:
+    build:
+      dockerfile: Dockerfile
+      tags: harvester-app
+
