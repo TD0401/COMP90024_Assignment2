@@ -1,3 +1,58 @@
 body {
-    background-color: #7f1cc5;
+    background-color: #dbf6e9;
+}
+
+.well {
+    background-color: aliceblue;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding-bottom: auto;
+    padding-top: auto;
+    font-weight: bold;
+    outline: rgb(16, 17, 17);
+}
+
+.col-1 {
+    padding-top: 3px;
+    padding-bottom: 1%;
+} 
+
+select{
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 1%;
+    margin-bottom: 2px;
+    padding-bottom: 1px;
+    display: block;
+    /* background-color: transparent; */
+    border: none;
+    font-size: large;
+    background-color:  rgb(26, 88, 114);
+    color: whitesmoke;
+    outline: none;
+  }
+
+
+#tweetDashboard {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding-right: 3px;
+    padding-left: 3px;
+    padding-top: 3px;
+    font-family: cursive;
+}
+
+#row3 {
+    margin-top: 5px;
+}
+
+#mapCluster {
+    margin-left: auto;
+    margin-right: auto;
+    height: 300px;
+    width: 600px;
+}
+
+#topicsPie {
+    height: 300px;
 }
