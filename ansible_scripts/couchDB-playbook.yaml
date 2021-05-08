@@ -12,6 +12,5 @@
     - role: couchDB-volumes
     - role: couchDB-security-groups
     - role: couchDB-instances
-    - role: couchDB-erlang-install
     - role: couchDB-install
     

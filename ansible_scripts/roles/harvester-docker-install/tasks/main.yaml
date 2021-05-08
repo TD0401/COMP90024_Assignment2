@@ -32,11 +32,11 @@
     state: present
 
 - name: Install docker
-  pip:
+  apt:
     name: docker
 
 - name: Install docker_compose
-  pip:
+  apt:
     name: docker-compose
 
 
