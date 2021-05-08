@@ -1,0 +1,55 @@
+---
+# Common variables
+availability_zone: melbourne-qh2-uom
+
+# Volumes
+volumes:
+  - vol_name: couchDB
+    vol_size: 50
+
+  
+
+# Security group
+security_groups:
+  - name: ssh
+    description: "ssh access"
+    protocol: tcp
+    port_range_min: 22
+    port_range_max: 22
+    direction: ingress
+    remote_ip_prefix: 0.0.0.0/0
+      
+  - name: http
+    description: "Security group for HTTP"
+    protocol: tcp
+    port_range_min: 80
+    port_range_max: 80
+    direction: ingress
+    remote_ip_prefix: 0.0.0.0/0
+  
+  - name: https
+    description: "Security group for HTTPS"
+    protocol: tcp
+    port_range_min: 443
+    port_range_max: 443
+    direction: ingress
+    remote_ip_prefix: 0.0.0.0/0
+
+  - name: couchDB_ports
+    description: "standard cluster"
+    protocol: tcp
+    port_range_min: 5984
+    port_range_max: 5984
+    direction: ingress
+    remote_ip_prefix: 0.0.0.0/0
+  
+
+# Instances
+instances:
+  - name: inst-couchDB
+    volume: ['couchDB']
+    instance_flavor: uom.mse.2c9g
+
+
+instance_image: f8b79936-6616-4a22-b55d-0d0a1d27bceb
+instance_key_name: new_key_sm

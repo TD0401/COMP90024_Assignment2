@@ -1,0 +1,50 @@
+---
+- name: "uninstall old docker"
+  tags: 'docker'
+  become: yes
+  apt: 
+    name: ['docker', 'docker-engine', 'docker.io']
+    state: absent
+  
+- name: install dependencies
+  tags: 'docker'
+  become: yes
+  apt:
+    name: ['apt-transport-https', 'build-essential', 'ca-certificates', 'curl', 'git', 'python3-dev', 'python3-pip', 'python3-setuptools', 'software-properties-common', 'unzip', 'vim']
+    state: latest
+    install_recommends: no
+    update_cache: yes
+
+- name: Add docker apt repo key
+  tags: 'docker'
+  become: yes
+  apt_key:
+    url: http://download.docker.com/linux/ubuntu/gpg
+    state: present
+
+- name: Add docker apt repo key and update cache
+  tags: 'docker'
+  become: yes
+  apt_repository: 
+    repo: "deb http://download.docker.com/linux/ubuntu/ focal stable"
+    mode: '644'
+    update_cache: yes
+    state: present
+
+- name: Install docker
+  become: yes
+  apt:
+    name: docker
+    
+
+- name: Install docker_compose
+  become: yes
+  apt:
+    name: docker-compose
+
+
+
+
+
+
+

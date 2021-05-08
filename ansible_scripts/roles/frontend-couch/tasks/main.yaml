@@ -1,0 +1,13 @@
+- name: GET CouchDB package repo
+  shell: echo "deb https://apache.bintray.com/couchdb-deb focal main" | sudo tee -a /etc/apt/sources.list
+
+- name: GET GPG keys
+  shell: curl -L https://couchdb.apache.org/repo/bintray-pubkey.asc | sudo apt-key add - 
+
+ 
+- name: install required packages
+  become: yes
+  apt: 
+    name: couchdb
+    state: present
+    
