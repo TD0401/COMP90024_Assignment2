@@ -32,5 +32,5 @@
 - name: install couchdb
   tags: 'couchDB'
   become: yes
-  pip: 
+  apt:
     name: couchdb
