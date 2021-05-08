@@ -4,7 +4,7 @@ const API_KEY = "pk.eyJ1IjoiZXpnYWxsbzg3IiwiYSI6ImNraWlqOWNkZzBhMTEyeW9kZTFsYWV2
 // Display the default plot
 function init(){
   
-    // Read samples.json 
+    // Read samples.json
     d3.json("static/data/plotlysamples.json").then((jsonObject) =>{
         
         console.log(jsonObject);  
@@ -21,14 +21,14 @@ function init(){
         // Call updatePlotly() when a change takes place to the DOM
         d3.selectAll("#selDataset").on("change", updatePlotly);
     });  
-};
+}
   
-init();
+init()
 
 
 // This function is called when a dropdown menu item is selected
 function updatePlotly() {
-    // Read samples.json 
+    // Read samples.json
     d3.json("static/data/plotlysamples.json").then((jsonObject) =>{
         
         // Use D3 to select the dropdown menu for IDs
@@ -38,7 +38,7 @@ function updatePlotly() {
         plotlyPlot(datasetID);
           
     });
-};  
+}
 
 function plotlyPlot(id){
     
@@ -121,7 +121,7 @@ function plotlyPlot(id){
 var queryUrl = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/significant_month.geojson"
 
 // Perform a GET request to the query URL
-d3.json(queryUrl, function(data) {
+d3.json(queryUrl).then((data) =>{
   
   console.log(data);
   // Once we get a response, send the data.features object to the createFeatures function
