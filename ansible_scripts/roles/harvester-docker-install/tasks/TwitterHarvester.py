@@ -187,7 +187,7 @@ def parse_and_store(db, tweet_json, index, geo_name, account_name):
                 json_data['user_desc'] = tweet_json['user']['description']
                 json_data['user_verified'] = tweet_json['user']['verified']
                 json_data['user_follower_count'] = tweet_json['user']['followers_count']
-                json_data['user_friend_count'] = tweet_json['user']['followers_count']
+                json_data['user_friend_count'] = tweet_json['user']['friends_count']
                 json_data['user_statuses_count'] = tweet_json['user']['statuses_count']
                 json_data['user_created_at']=  tweet_json['user']['created_at']
         except KeyError as e:
@@ -200,7 +200,7 @@ def parse_and_store(db, tweet_json, index, geo_name, account_name):
             if tweet_json['coordinates'] is not None:
                 if tweet_json['coordinates']['coordinates'] is not None:
                     json_data['coordinates_lat']= tweet_json['coordinates']['coordinates'][0]
-                    json_data['coordinates_lng']= tweet_json['coordinates']['coordinates'][0]
+                    json_data['coordinates_lng']= tweet_json['coordinates']['coordinates'][1]
         except KeyError as e:
             print(str(e))
         except:
