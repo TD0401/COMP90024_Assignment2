@@ -21,17 +21,3 @@
     name: ['openstacksdk==0.52']
     state: latest
 # pip install openstacksdk
-
-- name: Install tweepy
-  become: yes
-  pip:
-    name: ['tweepy']
-    state: latest
-
-
-#- name: Install couchDb
-#  become: yes
-#  apt:
-#    name: ['couchdb']
-#    state: latest
-# pip install couchdb

@@ -16,9 +16,13 @@
   loop: '{{ instances }}'
   register: os_instance
 
+- name: setting the os_instance variable
+  set_fact:
+    os_instances_ips: '{{ os_instance.results }}'
+
 - debug:
     msg: "Intances {{ item.openstack.name }} created. IP address {{ item.openstack.public_v4 }}"
-  loop: '{{ os_instance.results }}'
+  loop: '{{os_instances_ips}}'
   when: item.openstack is defined
 
 - name: wait for conn
@@ -27,14 +31,24 @@
     port: 22
     timeout: 120
     search_regex: OpenSSH
-  loop: '{{ os_instances.results }}'
+  loop: '{{os_instances_ips}}'
   when: item.openstack is defined
 
+- name: changing security for key
+  file:
+    path: new_key_sm.pem
+    state: file
+    mode: '700'
 
   # add hosts to ansible in-memory inventory
 - name: add host
   add_host:
-    name: '{{ item.openstack.public_v4 }} '
-    groups: 
-  loop: '{{ os_instances.results }}'
+    name: '{{ item.openstack.public_v4 }}'
+    groups: COMP90024
+    ansible_python_interpreter: /usr/bin/python3
+    ansible_user: ubuntu
+    ansible_ssh_private_key_file: new_key_sem.pem
+    ansible_ssh_common_args: '-o StrictHostKeyChecking=no'
+  loop: '{{os_instances_ips}}'
   when: item.openstack is defined
+

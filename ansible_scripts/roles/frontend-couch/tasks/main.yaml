@@ -1,13 +1,38 @@
-- name: GET CouchDB package repo
-  shell: echo "deb https://apache.bintray.com/couchdb-deb focal main" | sudo tee -a /etc/apt/sources.list
+- name: install dependencies
+  tags: 'couchDB'
+  become: yes
+  apt:
+    name: ['apt-transport-https', 'gnupg', 'curl', 'software-properties-common']
+    state: present
+    install_recommends: no
+    update_cache: yes
+  when: ansible_distribution == "Ubuntu"
+
 
 - name: GET GPG keys
-  shell: curl -L https://couchdb.apache.org/repo/bintray-pubkey.asc | sudo apt-key add - 
+  become: yes
+  apt_key:
+    url:  https://couchdb.apache.org/repo/bintray-pubkey.asc
+    state: present
+  when: ansible_distribution == "Ubuntu"
+  #shell: curl -L https://couchdb.apache.org/repo/bintray-pubkey.asc | apt-key add
 
+- name: add couchdb repo key and update cache
+  tags: 'couchdb'
+  become: yes
+  apt_repository:
+    repo: "deb https://apache.bintray.com/couchdb-deb focal main"
+    mode: '644'
+    update_cache: yes
+    state: installed
+  when: ansible_distribution == "Ubuntu"
+
+  #shell: echo "deb https://apache.bintray.com/couchdb-deb focal main" | tee -a /etc/apt/sources.list
  
 - name: install required packages
   become: yes
-  apt: 
+  apt:
     name: couchdb
-    state: present
+    state: installed
+  when: ansible_distribution == "Ubuntu"
     
