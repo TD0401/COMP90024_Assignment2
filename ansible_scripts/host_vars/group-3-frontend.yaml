@@ -53,3 +53,13 @@ instances:
 
 instance_image: f8b79936-6616-4a22-b55d-0d0a1d27bceb
 instance_key_name: new_key_sm
+
+
+
+proxy_env:
+  HTTP_PROXY: http://wwwproxy.unimelb.edu.au:8000/
+  HTTPS_PROXY: http://wwwproxy.unimelb.edu.au:8000/
+  http_proxy: http://wwwproxy.unimelb.edu.au:8000/
+  https_proxy: http://wwwproxy.unimelb.edu.au:8000/
+  no_proxy: localhost,127.0.0.1,localaddress,172.16.0.0/12,.melbourne.rc.nectar.org.au,.storage.unimelb.edu.au,.cloud.unimelb.edu.au
+

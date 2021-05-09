@@ -17,7 +17,11 @@
 - hosts: COMP90024
   vars_files:
     - host_vars/group-3-frontend.yaml
+    - host_vars/couchDB_vars.yaml
   gather_facts: true
+
+  #handlers:
+  #  - include: frontend-handlers/handler.yaml
 
   roles:
     - role: frontend-couch

@@ -1,0 +1,32 @@
+---
+couchdb_settings:
+  httpd:
+    port: "5984"
+    bind_address: "0.0.0.0"
+
+couchdb_admins:
+  admin: mrcpasswordcouch
+
+couchdb_users:
+  user_with_roles:
+    password: password123
+    roles:
+      - developer
+      - manager
+  user_without_roles:
+    password: password456
+
+couchdb_databases:
+  twitterfeed:
+    admin:
+      names:
+        - user_without_roles
+      roles:
+        - manager
+
+#couchdb_replication:
+#  - source: my_database
+#    target: http://backup.example.com:5984/my_database
+#    continuous: yes
+
+couchdb_url: "http://localhost:5984"

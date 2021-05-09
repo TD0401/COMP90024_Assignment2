@@ -6,6 +6,7 @@
     state: present
     install_recommends: no
     update_cache: yes
+  environment: '{{proxy_env}}'
   when: ansible_distribution == "Ubuntu"
 
 
@@ -14,6 +15,7 @@
   apt_key:
     url:  https://couchdb.apache.org/repo/bintray-pubkey.asc
     state: present
+  environment: '{{proxy_env}}'
   when: ansible_distribution == "Ubuntu"
   #shell: curl -L https://couchdb.apache.org/repo/bintray-pubkey.asc | apt-key add
 
@@ -24,7 +26,8 @@
     repo: "deb https://apache.bintray.com/couchdb-deb focal main"
     mode: '644'
     update_cache: yes
-    state: installed
+    state: present
+  environment: '{{proxy_env}}'
   when: ansible_distribution == "Ubuntu"
 
   #shell: echo "deb https://apache.bintray.com/couchdb-deb focal main" | tee -a /etc/apt/sources.list
@@ -33,6 +36,84 @@
   become: yes
   apt:
     name: couchdb
-    state: installed
+    state: present
+  environment: '{{proxy_env}}'
   when: ansible_distribution == "Ubuntu"
+  register: couchdb_install
+
+- name: setting the os_instance variable
+  set_fact:
+    couchdb_install_var: '{{ couchdb_install }}'
+
+- name: stop couchDB
+  become: yes
+  service:
+    name: couchdb
+    state: stopped
+  when: ansible_distribution == "Ubuntu"
+
+- name: change owner of couchdb executable
+  file:
+    state: file
+    mode: 0770
+    owner: ubuntu
+    group: ubuntu
+    path: /usr/bin/couchdb
+  when: couchdb_install_var.changed
+
+- name: secure couchdb installation
+  file:
+    state: directory
+    mode: 0770
+    owner: ubuntu
+    group: ubuntu
+    path: "{{ item }}"
+  with_items:
+    - /usr/lib/couchdb
+    - /usr/share/couchdb
+    - /etc/couchdb
+  when: couchdb_install_var.changed
+
+- name: start couchdb
+  become: yes
+  service:
+    name: couchdb
+    state: started
+  when: couchdb_install_var.changed
+
+- name: change bind address
+  become: yes
+  lineinfile:
+    dest: /opt/couchdb/etc/local.ini
+    state: present
+    line: "{{ item.key }} = {{ item.value }}"
+    regexp: "^{{ item.key }} = "
+    insertafter: "^\\[chttpd\\]$"
+  with_dict: "{{ couchdb_settings.httpd }}"
+
+- name: setup admins
+  become: yes
+  lineinfile:
+    dest: /opt/couchdb/etc/local.ini
+    state: present
+    line: "{{ item.key }} = {{ item.value }}"
+    regexp: "^{{ item.key }} = "
+    insertafter: "^\\[admins\\]$"
+  with_dict: "{{ couchdb_admins }}"
+
+
+- name: restart couchdb
+  become: yes
+  service:
+    name: couchdb
+    state: restarted
     
+- name: create databases
+  uri:
+    url: "{{ couchdb_url }}/twitterfeed"
+    method: PUT
+    user: "{{ item.key }}"
+    password: "{{ item.value }}"
+    force_basic_auth: "{{ couchdb_admins | length > 0 }}"
+    status_code: 201,412
+  with_dict: "{{ couchdb_admins }}"
