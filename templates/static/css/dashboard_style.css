@@ -1,5 +1,10 @@
 body {
-    background-color: #dbf6e9;
+    /* background-color: #dbf6e9; */
+    background-image: url("/templates/static/imgs/bg8.jpg"); 
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100%
 }
 
 .well {
@@ -39,7 +44,7 @@ select{
     padding-right: 3px;
     padding-left: 3px;
     padding-top: 3px;
-    font-family: cursive;
+    font-family: Verdana, sans-serif;
 }
 
 #row3 {
@@ -50,7 +55,7 @@ select{
     margin-left: auto;
     margin-right: auto;
     height: 300px;
-    width: 600px;
+    width: 800px;
 }
 
 #topicsPie {

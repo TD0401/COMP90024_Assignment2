@@ -66,8 +66,8 @@ function plotlyPlot(id){
     
         //sorting by sample values
         var clean_data = zip.sort((a, b) => b[0] - a[0]).slice(0,10).reverse();
-        console.log("THIS IS CLEAN_DATA")
-        console.log(clean_data);
+        // console.log("THIS IS CLEAN_DATA")
+        // console.log(clean_data);
         
         sampleValues = clean_data.map(object => object[0]);
         // console.log(x_axis);
@@ -86,7 +86,9 @@ function plotlyPlot(id){
             y: outIDs,
             text: hover_text,
             type: "bar",
-            orientation: "h"
+            orientation: "h",
+            
+            
         };
         
         
@@ -94,7 +96,7 @@ function plotlyPlot(id){
             values: sampleValues,
             labels: outIDs,
             hovertext: hover_text,
-            type: "pie",
+            type: "pie",        
         };
         
         // data
@@ -103,7 +105,9 @@ function plotlyPlot(id){
         
         // Apply the group bar mode to the layout
         var layout = {
-            title: `Top 10 OTU IDs for ID ${id}`
+            title: `Top 10 OTU IDs for ID ${id}`,
+            plot_bgcolor:"#dbf6e9",
+            paper_bgcolor:"#dbf6e9"
         };
     
         // Render the plot to the div tag with id "bar"
