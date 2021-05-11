@@ -1,5 +1,5 @@
 ---
-# - name: Gather facs of remote host
+# - name: Gather facts of remote host
 #  setup: 
 #    gather_subnet: all
 
