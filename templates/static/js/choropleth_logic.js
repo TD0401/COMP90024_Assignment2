@@ -19,15 +19,18 @@ var myMap = L.map("map", {
   }).addTo(myMap);
   
   // Load in geojson data
-  var geoData = "static/data/Median_Household_Income_2016.geojson";
-  console.log(geoData);
+  var geoDataTest = "static/data/Median_Household_Income_2016.geojson";
+  // console.log(geoDataTest);
   
+  var geoData ="static/data/spatial_data.json"
+  // console.log(geoData);
   
   var geojson;
   
   // Grab data with d3
   d3.json(geoData, function(data) {
   
+    console.log("this is geoData");
     console.log(data);
   
     // Create a new choropleth layer
@@ -67,7 +70,7 @@ var myMap = L.map("map", {
       var labels = [];
   
       // Add min & max
-      var legendInfo = "<h1>Median Income</h1>" +
+      var legendInfo = "<h3>Median Income</h3>" +
         "<div class=\"labels\">" +
           "<div class=\"min\">" + limits[0] + "</div>" +
           "<div class=\"max\">" + limits[limits.length - 1] + "</div>" +

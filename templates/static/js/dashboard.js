@@ -33,7 +33,8 @@ function updatePlotly() {
         
         // Use D3 to select the dropdown menu for IDs
         var datasetID = d3.select("#selDataset").property("value");
-        console.log(datasetID);
+        // var datasetID2 = document.querySelector("#selDataset").querySelector('option').value;
+        // console.log(datasetID2);
   
         plotlyPlot(datasetID);
           
@@ -224,6 +225,7 @@ function createMap(earthquakes) {
       "Dark Map": darkmap
     };
   
+    console.log(earthquakes);
     // Create overlay object to hold our overlay layer
     var overlayMaps = {
       Earthquakes: earthquakes
