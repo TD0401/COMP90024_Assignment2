@@ -7,8 +7,17 @@
   gather_facts: true
 
   roles:
-    - role: harvester-common
-    - role: harvester-volumes
-    - role: harvester-security-groups
-    - role: harvester-instances
+    - role: common
+    - role: volumes
+    - role: security-groups
+    - role: instances
+
+
+
+- hosts: harvester-instance-1
+  vars_files:
+    - host_vars/group-2-harvester.yaml
+  gather_facts: true
+
+  roles:
     - role: harvester-docker-install

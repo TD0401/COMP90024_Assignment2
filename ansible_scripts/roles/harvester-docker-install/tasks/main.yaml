@@ -14,6 +14,7 @@
     state: latest
     install_recommends: no
     update_cache: yes
+  environment: '{{proxy_env}}'
 
 - name: Add docker apt repo key
   tags: 'docker'
@@ -21,6 +22,7 @@
   apt_key:
     url: http://download.docker.com/linux/ubuntu/gpg
     state: present
+  environment: '{{proxy_env}}'
 
 - name: Add docker apt repo key and update cache
   tags: 'docker'
@@ -30,14 +32,21 @@
     mode: '644'
     update_cache: yes
     state: present
+  environment: '{{proxy_env}}'
 
 - name: Install docker
+  become: yes
   apt:
     name: docker
+  environment: '{{proxy_env}}'
 
 - name: Install docker_compose
+  become: yes
   apt:
     name: docker-compose
+  environment: '{{proxy_env}}'
+
+
 
 
 

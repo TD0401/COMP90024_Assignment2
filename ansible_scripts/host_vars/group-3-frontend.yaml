@@ -7,6 +7,7 @@ volumes:
   - vol_name: couchDB
     vol_size: 50
 
+
   
 
 # Security group

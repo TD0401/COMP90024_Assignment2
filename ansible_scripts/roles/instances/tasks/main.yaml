@@ -44,7 +44,7 @@
 - name: add host
   add_host:
     name: '{{ item.openstack.public_v4 }}'
-    groups: COMP90024
+    groups: '{{ item.openstack.name }}'
     ansible_python_interpreter: /usr/bin/python3
     ansible_ssh_user: ubuntu
     ansible_user: ubuntu

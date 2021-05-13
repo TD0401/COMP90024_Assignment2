@@ -4,5 +4,6 @@
 
 whoami
 date
-. ./unimelb-comp90024-2021-grp-19-openrc.sh; ansible-playbook --ask-become-pass harvester-playbook.yaml > harvester_out.txt
+. ./unimelb-comp90024-2021-grp-19-openrc.sh; ansible-playbook -i hosts --ask-become-pass harvester-playbook.yaml -v  > harvester_out.txt
 # N2VhYmYwYjIxNjFkZWI0
+

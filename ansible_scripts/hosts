@@ -1,6 +1,16 @@
-[COMP90024]
+[inst-couchDB]
 
-[COMP90024:vars]
+[inst-couchDB:vars]
+ansible_python_interpreter=/usr/bin/python3
+ansible_ssh_user=ubuntu
+ansible_user=ubuntu
+ansible_ssh_private_key_file=/Users/trinadey/.ssh/new_key_sm.pem
+ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+
+
+[harvester-instance-1]
+
+[harvester-instance-1:vars]
 ansible_python_interpreter=/usr/bin/python3
 ansible_ssh_user=ubuntu
 ansible_user=ubuntu

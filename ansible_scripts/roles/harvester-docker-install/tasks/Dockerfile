@@ -4,7 +4,7 @@ RUN mkdir /harvester
 
 COPY TwitterHarvester.py   /harvester
 
-RUN pip install Tweepy
+RUN pip install tweepy
 RUN pip install couchdb
 
 WORKDIR /harvester
