@@ -13,12 +13,3 @@
   }
 }
 
-CURL COMMAND TO QUERY
-curl --location --request GET 'http://172.26.129.229:5984/twitterfeed/_partition/partition0/_design/TweetCountLatLng/_view/countByLatLng?reduce=true&group=true&update=lazy&skip=20&limit=10' \
---header 'accept: application/json' \
---header 'Content-Type: application/json' \
---header 'Authorization: Basic YWRtaW46bXJjcGFzc3dvcmRjb3VjaA=='
-
-
-the skip param sets the page offset
-and limit sets the records to be fetched.
