@@ -4,7 +4,7 @@ const API_KEY = "pk.eyJ1IjoiZXpnYWxsbzg3IiwiYSI6ImNraWlqOWNkZzBhMTEyeW9kZTFsYWV2
 
 // Creating map object
 var myMap = L.map("map", {
-    center: [34.0522, -118.2437],
+    center: [37.4713, 144.7852],
     zoom: 8
   });
   

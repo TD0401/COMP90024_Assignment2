@@ -125,8 +125,10 @@ function plotlyPlot(id){
 // Store our API endpoint inside queryUrl
 var queryUrl = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/significant_month.geojson"
 
+var map_data = "http://127.0.0.1:5000/locationCounts"
+
 // Perform a GET request to the query URL
-d3.json(queryUrl).then((data) =>{
+d3.json(map_data).then((data) =>{
   
   console.log(data);
   // Once we get a response, send the data.features object to the createFeatures function
