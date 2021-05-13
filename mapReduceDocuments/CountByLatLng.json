@@ -1,10 +1,14 @@
 {
   "_id": "_design/TweetCountLatLng",
-  "_rev": "5-97acddf2d11424ffd63611afc4af1a18",
+  "_rev": "8-5a1e37e53acb58f7192c3824f65ef200",
   "views": {
     "countByLatLng": {
       "reduce": "_count",
       "map": "function (doc) {\n  if(doc.coordinates_lat && doc.coordinates_lng && doc.place_name)\n      emit([parseFloat(doc.coordinates_lng.toFixed(3)),parseFloat(doc.coordinates_lat.toFixed(3)),doc.place_name], 1);\n}"
+    },
+    "countByState": {
+      "reduce": "_count",
+      "map": "function (doc) {\n  if(doc.coordinates_lat && doc.coordinates_lng){\n    if(-39.060782 <doc.coordinates_lng &&  doc.coordinates_lng  <-34.135311 && 140.923152 < doc.coordinates_lat && doc.coordinates_lat < 149.909968 )\n      emit(['Victoria','VIC'],1);\n    if(-34.470930 <doc.coordinates_lng &&  doc.coordinates_lng  <-28.16951 && 140.906307 < doc.coordinates_lat && doc.coordinates_lat < 154.362534 )\n      emit(['New South Wales','NSW'],1);\n    if(-28.948032 <doc.coordinates_lng &&  doc.coordinates_lng  <-12.610675 && 137.971640 < doc.coordinates_lat && doc.coordinates_lat < 153.571355 )\n      emit(['Queensland','QL'],1);\n    if(-25.928942 <doc.coordinates_lng &&  doc.coordinates_lng  <-11.409829 && 129.071842 < doc.coordinates_lat && doc.coordinates_lat < 138.080128 )\n      emit(['Northern Territory','NT'],1);\n    if(-35.199090 <doc.coordinates_lng &&  doc.coordinates_lng  <-13.277255 && 113.023758 < doc.coordinates_lat && doc.coordinates_lat < 128.887790 )\n      emit(['Western Australia','WT'],1);\n    if(-38.033372 <doc.coordinates_lng &&  doc.coordinates_lng  < -25.450329 && 128.859295 < doc.coordinates_lat && doc.coordinates_lat <141.075410 )\n      emit(['South Australia','SA'],1);\n    if(-43.354260 <doc.coordinates_lng &&  doc.coordinates_lng  < -40.675674 && 144.678355 < doc.coordinates_lat && doc.coordinates_lat < 148.238422  )\n      emit(['Tasmania','TS'],1);\n  }\n}"
     }
   },
   "language": "javascript",
@@ -12,4 +16,3 @@
     "partitioned": true
   }
 }
-

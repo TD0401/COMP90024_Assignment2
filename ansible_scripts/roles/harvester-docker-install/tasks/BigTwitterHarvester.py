@@ -124,8 +124,8 @@ def parse_json(tweet_json, rank):
         try:
             if tweet_json['value'] is not None and tweet_json['value']['geometry'] is not None:
                 if tweet_json['value']['geometry']['coordinates'] is not None:
-                    json_data['coordinates_lat'] = tweet_json['value']['geometry']['coordinates'][0]
-                    json_data['coordinates_lng'] = tweet_json['value']['geometry']['coordinates'][1]
+                    json_data['coordinates_lat'] = tweet_json['value']['geometry']['coordinates'][1]
+                    json_data['coordinates_lng'] = tweet_json['value']['geometry']['coordinates'][0]
         except KeyError as e:
             print(str(e))
         except:
@@ -147,6 +147,18 @@ def parse_json(tweet_json, rank):
             json_data['hash_tags'] = get_hash_tags(tweet_json['doc']['entities']['hashtags'])
             json_data['user_mentions'] = get_user_mentions(tweet_json['doc']['entities']['user_mentions'])
 
+        mango_query = {
+            "selector": { "id": {"$eq": id}},
+            "fields": ["_rev"],
+
+        }
+        db = couch['twitterfeed']
+
+
+        status, headers, data = db.resource.post_json('_find', mango_query)
+        if data is not None and data['docs'] is not None and len(data['docs']) > 0:
+            rev = data['docs'][0]['_rev']
+            json_data['_rev'] = rev
         db.save(json_data)
         return id
     except:
