@@ -14,7 +14,7 @@
 
 
 
-- hosts: inst-couchDB
+- hosts: inst-couchDB2
   vars_files:
     - host_vars/group-3-frontend.yaml
     - host_vars/couchDB_vars.yaml

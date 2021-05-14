@@ -58,7 +58,7 @@
     mode: 0770
     owner: ubuntu
     group: ubuntu
-    path: /usr/bin/couchdb
+    path: /opt/couchdb/bin
   when: couchdb_install_var.changed
 
 - name: secure couchdb installation
@@ -69,7 +69,7 @@
     group: ubuntu
     path: "{{ item }}"
   with_items:
-    - /usr/lib/couchdb
+    - /opt/couchdb/lib
     - /usr/share/couchdb
     - /etc/couchdb
   when: couchdb_install_var.changed

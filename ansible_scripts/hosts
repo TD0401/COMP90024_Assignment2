@@ -1,6 +1,6 @@
-[inst-couchDB]
+[inst-couchDB2]
 
-[inst-couchDB:vars]
+[inst-couchDB2:vars]
 ansible_python_interpreter=/usr/bin/python3
 ansible_ssh_user=ubuntu
 ansible_user=ubuntu
