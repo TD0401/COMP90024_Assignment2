@@ -1,45 +1,68 @@
 const API_KEY = "pk.eyJ1IjoiZXpnYWxsbzg3IiwiYSI6ImNraWlqOWNkZzBhMTEyeW9kZTFsYWV2eXMifQ.FIAMf-ix0ER-CwPLhc02xg"
 
-// dayBars1
-// Display the default plot
+var state_count = "http://127.0.0.1:5000/stateCounts"
+console.log(state_count);
+
+var map_data = "http://127.0.0.1:5000/locationCounts"
+var daily_count = "http://127.0.0.1:5000/dailyCount"
+var hourly_count = "http://127.0.0.1:5000/hourlyCount"
+
+
 function init(){
-  
-    // Read samples.json
-    d3.json("static/data/plotlysamples.json").then((jsonObject) =>{
-        
-        console.log(jsonObject);  
-          
-        // add all of the IDs to the drop down menu
-        d3.select("#selDataset").selectAll("option")
-            .data(jsonObject.samples)
-            .enter()
-            .append('option')
-            .html(samples => samples.id);
-        
-        plotlyPlot("940");  
     
-        // Call updatePlotly() when a change takes place to the DOM
-        d3.selectAll("#selDataset").on("change", updatePlotly);
-    });  
+  // Read samples.json
+  d3.json("static/data/plotlysamples.json").then((jsonObject) =>{
+    d3.json(state_count).then((statesObject)=>{
+      
+      console.log(statesObject);
+      // console.log(statesObject.map(object => object.state));
+      d3.select("#selState").selectAll("option")
+          .data(statesObject)
+          .enter()
+          .append('option')
+          .html(statesObject => statesObject.state);
+      
+      // //////   DUMMY \\\\\\\\\\\\\\\\\\\\\\\\\
+      // console.log("DUMMY DATA")
+          
+      // add all of the IDs to the drop down menu
+      // d3.select("#selDataset").selectAll("option")
+      //     .data(jsonObject.samples)
+      //     .enter()
+      //     .append('option')
+      //     .html(samples => samples.id);
+      
+      // plotlyPlot("940");  
+      
+      stateCountPlot();
+      daysPlotly("WA");
+      hoursPlotly("WA");
+
+      // Call updatePlotly() when a change takes place to the DOM
+      d3.selectAll("#selState").on("change", updatePlotly);
+      
+    });     
+  })
 }
-  
+
 init()
 
-
+//                                   UPDATE  PLOT                          \\
 // This function is called when a dropdown menu item is selected
 function updatePlotly() {
-    // Read samples.json
-    d3.json("static/data/plotlysamples.json").then((jsonObject) =>{
-        
-        // Use D3 to select the dropdown menu for IDs
-        var datasetID = d3.select("#selDataset").property("value");
-        // var datasetID2 = document.querySelector("#selDataset").querySelector('option').value;
-        // console.log(datasetID2);
+  // Read samples.json     
+  // Use D3 to select the dropdown menu for IDs
+  var state = d3.select("#selState").property("value");
+  // statePlotly(datasetID);
   
-        plotlyPlot(datasetID);
-          
-    });
+  daysPlotly(state);
+  hoursPlotly(state);
+      
 }
+
+
+/////////////////////////////////////      Horizontal Bar Chart         \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ 
+/////////////////////////////////////      DUMMY FUNCTION        \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ 
 
 function plotlyPlot(id){
     
@@ -71,27 +94,24 @@ function plotlyPlot(id){
         // console.log(clean_data);
         
         sampleValues = clean_data.map(object => object[0]);
-        // console.log(x_axis);
+        console.log(sampleValues);
     
         outIDs = clean_data.map(object => `OTU ${object[1]}`);
-        // console.log(y_axis)
+        // console.log("THIS Y AXIS")
+        // console.log(outIDs);
     
         hover_text = clean_data.map(object => object[2]);
         
-        /////////////////////       BAR & PIE CHART     \\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+      //   bar and pie chart for Dummy Graphs \\
         
-      
         // Trace1 for bar charts
         var trace1 = {
             x: sampleValues,
             y: outIDs,
             text: hover_text,
             type: "bar",
-            orientation: "h",
-            
-            
+            orientation: "h",    
         };
-        
         
         var trace2 = {
             values: sampleValues,
@@ -110,84 +130,318 @@ function plotlyPlot(id){
             plot_bgcolor:"#dbf6e9",
             paper_bgcolor:"#dbf6e9"
         };
-    
+        
         // Render the plot to the div tag with id "bar"
         Plotly.newPlot("horzBar", dataBar, layout);
         
         // Render the plot to the div tag with id "pie"
         Plotly.newPlot("topicsPie", dataPie, layout);
-
     });
 };
+/////////////////////////////////////      END DUMMY FUNCTION         \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ 
 
-//////////////////////    mapCluster \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+function stateCountPlot() {
+  d3.json(state_count).then((statesObject)=>{
+    
+    
+    sorted = statesObject.sort((a, b) => b.value - a.value).reverse();
+    // console.log(sorted);
+    var x_axis = sorted.map(object => object.value);
+    // console.log(test);
+    var y_axis = sorted.map(object => object.state);
+
+
+    // Trace1 for bar charts
+    var trace1 = {
+      x: x_axis,
+      y: y_axis,
+      type: "bar",
+      orientation: "h",
+      marker: {
+        // color: '#6ddccf'
+        // color: 'rgb(26, 88, 114)'
+        // color: '#008891'
+        color: '#c6ebc9'
+        // width: 1
+      }    
+    };
+
+    // data
+    var dataBar = [trace1];
+    
+    // Apply the group bar mode to the layout
+    var layout = {
+      title: {
+        text:  `Tweet Count per State`,
+        font:{
+          family: 'Verdana, sans-serif',
+          size: 25
+        }
+      },
+      plot_bgcolor:"rgba(0,0,0,0)",
+      paper_bgcolor:"rgba(0,0,0,0)",
+      xaxis: {
+        title: {
+          text:  "Total Tweet Count ",
+          font:{
+            family: 'Verdana, sans-serif',
+            size: 17
+          }
+        }
+      },
+      yaxis: {
+        // gridwidth: 2,
+        title: {
+          text:  "State",
+          font:{
+            family: 'Verdana, sans-serif',
+            size: 17
+          }
+        }
+      },
+    };
+
+    // Render the plot to the div tag with id "bar"
+    Plotly.newPlot("horzBar", dataBar, layout);
+
+  }); 
+}
+
+
+// ///////////////////////////////      Count by Day        \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+function daysPlotly(state) {
+
+  d3.json(daily_count).then((object) => {
+    
+    var filteredData = object.filter(data => data.state.toString() === state);
+    // console.log(filteredData);
+
+    var x_axis = ["Mon", "Tues", "Wed", "Thurs", "Fri", "Sat", "Sun"];
+    
+    // var y_axis = filteredData.map(data => data.value);
+    // console.log(y_axis);
+    
+    var mon = filteredData.filter(data=> data.day.toString() === "Mon")
+    var monData = mon[0].value;
+
+    var tue = filteredData.filter(data=> data.day.toString() === "Tue")
+    var tueData = tue[0].value;
+
+    var wed = filteredData.filter(data=> data.day.toString() === "Wed")
+    var wedData = wed[0].value;
+
+    var th = filteredData.filter(data=> data.day.toString() === "Thu")
+    var thuData = th[0].value;
+    
+    var fr = filteredData.filter(data=> data.day.toString() === "Fri")
+    var frData = fr[0].value;
+    
+    var sat = filteredData.filter(data=> data.day.toString() === "Sat")
+    var satData = sat[0].value;
+    
+    var sun = filteredData.filter(data=> data.day.toString() === "Sun")
+    var sunData = sun[0].value;
+
+    var y_axis = [monData, tueData, wedData, thuData, frData, satData, sunData];
+
+    var data = [
+      {
+        x: x_axis,
+        y: y_axis,
+        type: 'bar',
+        marker: {
+          // color: '#d8f8b7'
+          // color: '#e8e9a1'
+          // color: '#c6ebc9'
+          color: '#008891'
+          // width: 1
+        }
+      }];
+    
+    var layout = {
+      title: {
+        text: `Daily Tweet Count for ${state}`,
+        font:{
+          family: 'Verdana, sans-serif',
+          size: 25,
+        }
+      },
+      
+      showlegend: false,
+      xaxis: {
+        tickangle: -45,
+        title: {
+          text:  "Day of Week ",
+          font:{
+            family: 'Verdana, sans-serif',
+            size: 17
+          }
+        }
+      },
+      yaxis: {
+        zeroline: false,
+        gridwidth: 2,
+        title: {
+          text:  "Count",
+          font:{
+            family: 'Verdana, sans-serif',
+            size: 17
+          }
+        }
+      },
+      bargap :0.05,
+      plot_bgcolor:"rgba(0,0,0,0)",
+      paper_bgcolor:"rgba(0,0,0,0)"
+    };
+    
+    Plotly.newPlot('dayBars1', data, layout);
+  });
+}
+
+// /////////////////////////////        Count by Hour        \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+function hoursPlotly(state){
+  d3.json(hourly_count).then((object) => {
+
+    var filteredData = object.filter(data => data.state.toString() === state);
+    console.log(filteredData);
+
+    var x_axis = filteredData.map(data => data.hour);
+    console.log(x_axis);
+
+    var y_axis = filteredData.map(data => data.value);
+    console.log(y_axis);
+
+    var data = [
+      {
+        x: x_axis,
+        y: y_axis,
+        type: 'bar',
+        marker: {
+          // color: '#70af85'
+          // color: '#008891'
+          color: 'rgb(26, 88, 114)'
+        }
+      }];
+    
+    var layout = {
+      title: {
+        text:  `Hourly Tweet Count for ${state}`,
+        font:{
+          family: 'Verdana, sans-serif',
+          size: 25
+        }
+      },
+      showlegend: false,
+      xaxis: {
+        tickangle: -45,
+        title: {
+          text:  "Hour of the Day (24hr)",
+          font:{
+            family: 'Verdana, sans-serif',
+            size: 17
+          }
+        }  
+      },
+      yaxis: {
+        zeroline: false,
+        gridwidth: 2,
+        title: {
+          text:  "Count",
+          font:{
+            family: 'Verdana, sans-serif',
+            size: 17
+          }
+        }
+      },
+      bargap :0.05,
+      plot_bgcolor:"rgba(0,0,0,0)",
+      paper_bgcolor:"rgba(0,0,0,0)"
+    };
+    
+    Plotly.newPlot('hourBars2', data, layout);
+
+  });
+}
+
+
+
+// ///////////////////////////          Topic Analysis       \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+
+
+//////////////////////            MAP Cluster         \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
 // Store our API endpoint inside queryUrl
-var queryUrl = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/significant_month.geojson"
-
-var map_data = "http://127.0.0.1:5000/locationCounts"
+// var queryUrl = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/significant_month.geojson"
 
 // Perform a GET request to the query URL
 d3.json(map_data).then((data) =>{
   
-  console.log(data);
+  // console.log("INITIAL LOG");
+  // console.log(data);
+
   // Once we get a response, send the data.features object to the createFeatures function
   // array of json objects 
-  var dataArray = data.features
-  console.log(dataArray);
+  // var dataArray = data.features
+  // console.log(dataArray);
 
-  createFeatures(dataArray);
+  createFeatures(data);
 
 });
 
-function getColour(magnitude) {
-    var color = "";
-    // if (magnitude > 7) {
-    //   color = "red";
-    // }
-    // if (magnitude > 6) {
-    //   color = "red";
-    // }
-    if (magnitude > 5) {
-      color = "#e1881b";
-    }
-    else if (magnitude > 4) {
-      color = "#eb961e";
-    }
-    else if (magnitude > 3) {
-      color = "#f9af3a";
-    }
-    else if (magnitude > 2) {
-      color = "#f9c54e";
-    }
-    else if (magnitude > 1) {
-      color = "#c8ba4a";
-    }
-    else {
-      color = "#a0b657";
-    }
-
-    return color;
+function getColour(count) {
+  // console.log(count);
+  switch (count) {
+    case count > 100:
+      return "#ce1212";
+      break;
+    case count > 60:
+      return "#ce1212";
+       break;
+    case count >33:
+      return "#e1881b";
+      break;
+    case count > 25:
+      return "#eb961e";
+      break;
+    case count >18:
+      return "#f9af3a";
+      break;
+    case count > 10:
+      return "#f9c54e";
+      break;
+    case count > 5:
+      return "#c8ba4a";
+      break;
+    default:
+      return "#72147e"
+  }
 }
 
-function createFeatures(earthquakeData) {
 
+
+function createFeatures(twitData) {
+
+  // console.log("CREATE FEATURES");
+  // console.log(twitData);
   // Define a function we want to run once for each feature in the features array
   // Give each feature a popup describing the place and time of the earthquake
   function onEachFeature(feature, layer) {
 
-    layer.bindPopup("<h3>" + feature.properties.place +
-      "</h3><hr><p>" + new Date(feature.properties.time) + "</p>");
+    layer.bindPopup("<p>" + feature.properties.place +
+      "</p><hr><p>" + feature.properties.count + "</p>");
   }
 
   // Create a GeoJSON layer containing the features array on the earthquakeData object
   // Run the onEachFeature function once for each piece of data in the array  
-  var earthquakes = L.geoJSON(earthquakeData, {
+  var twitts = L.geoJSON(twitData, {
     pointToLayer: function (feature, latlng) {
       var geojsonMarkerOptions = {
-          radius: feature.properties.mag*2,
-          fillColor: getColour(feature.properties.mag),
-          color: "black",
+          radius: feature.properties.count/200,
+          fillColor: getColour(feature.properties.count),
+          // color: 'white',
           weight: 1,
           opacity: 1,
           fillOpacity: 1
@@ -199,10 +453,10 @@ function createFeatures(earthquakeData) {
   });
   
   // Sending our earthquakes layer to the createMap function
-  createMap(earthquakes);
+  createMap(twitts);
 }
 
-function createMap(earthquakes) {
+function createMap(twitter) {
 
     // Define streetmap and darkmap layers
     var streetmap = L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
@@ -227,19 +481,19 @@ function createMap(earthquakes) {
       "Dark Map": darkmap
     };
   
-    console.log(earthquakes);
+    // console.log(earthquakes);
     // Create overlay object to hold our overlay layer
     var overlayMaps = {
-      Earthquakes: earthquakes
+      Tweets: twitter
     };
   
     // Create our map, giving it the streetmap and earthquakes layers to display on load
     var myMap = L.map("mapCluster", {
       center: [
-        37.09, -95.71
+        -30.2744, 140.7751
       ],
-      zoom: 5,
-      layers: [streetmap, earthquakes]
+      zoom: 4,
+      layers: [streetmap, twitter]
     });
   
     // Create a layer control

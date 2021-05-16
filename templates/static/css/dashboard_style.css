@@ -7,20 +7,51 @@ body {
     height: 100%
 }
 
-.well {
-    background-color: aliceblue;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    padding-bottom: auto;
-    padding-top: auto;
-    font-weight: bold;
-    outline: rgb(16, 17, 17);
+.container{
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: auto;
+    padding-right: auto;
 }
 
-.col-1 {
+#dayBars1{
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#horzBar{
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#hourBars2 {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#tweetDashboard {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    /* padding-right: 3px; */
+    padding-left: 3px;
     padding-top: 3px;
-    padding-bottom: 1%;
-} 
+    font-family: Verdana, sans-serif;
+}
+
+#row3 {
+    margin-top: 5px;
+}
+
+#mapCluster {
+    margin-left: auto;
+    margin-right: auto;
+    height: 500px;
+    width: 900px;
+}
+
+#topicsPie {
+    height: 300px;
+}
 
 select{
     margin-left: auto;
@@ -35,29 +66,17 @@ select{
     background-color:  rgb(26, 88, 114);
     color: whitesmoke;
     outline: none;
-  }
-
-
-#tweetDashboard {
-    margin-top: 10px;
-    margin-bottom: 10px;
-    padding-right: 3px;
-    padding-left: 3px;
-    padding-top: 3px;
-    font-family: Verdana, sans-serif;
 }
 
-#row3 {
-    margin-top: 5px;
-}
-
-#mapCluster {
+.well {
     margin-left: auto;
     margin-right: auto;
-    height: 500px;
-    width: 800px;
-}
-
-#topicsPie {
-    height: 300px;
+    background-color: aliceblue;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding-bottom: auto;
+    padding-left: 10px;
+    font-weight: bold;
+    outline: rgb(16, 17, 17);
+    height: 50px;
 }
