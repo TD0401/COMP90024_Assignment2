@@ -1,0 +1,10 @@
+---
+- name: setup proxy in etc environment
+  become: yes
+  lineinfile:
+    dest: /etc/environment
+    state: present
+    line: "{{ item.key }}={{ item.value }}"
+    regexp: "^{{ item.key }}= "
+    insertafter: "^PATH$"
+  with_dict: "{{ proxy_env }}"

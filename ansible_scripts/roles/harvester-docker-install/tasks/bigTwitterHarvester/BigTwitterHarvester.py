@@ -5,7 +5,7 @@ import json
 from datetime import datetime
 
 #COUCH_URL = "http://admin:password@127.0.0.1:5984/"
-COUCH_URL = "http://admin:mrcpasswordcouch@172.26.129.229:5984/"
+COUCH_URL = "http://admin:mrcpasswordcouch@172.26.134.25:5984/"
 couch = couchdb.Server(COUCH_URL)
 db = couch["twitterfeed"]
 

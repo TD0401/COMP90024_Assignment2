@@ -1,11 +1,17 @@
 ---
+#- name: stop docker
+#  become: yes
+#  service:
+#    name: docker
+#    state: stopped
+
 - name: "uninstall old docker"
   tags: 'docker'
   become: yes
-  apt: 
+  apt:
     name: ['docker', 'docker-engine', 'docker.io']
     state: absent
-  
+
 - name: install dependencies
   tags: 'docker'
   become: yes
@@ -38,12 +44,128 @@
   become: yes
   apt:
     name: docker
+    state: present
+  environment: '{{proxy_env}}'
+
+- name: Install docker.io
+  become: yes
+  apt:
+    name: docker.io
+    state: present
   environment: '{{proxy_env}}'
 
 - name: Install docker_compose
   become: yes
   apt:
     name: docker-compose
+    state: latest
+  environment: '{{proxy_env}}'
+
+
+- name: check docker.services.d directory exists
+  become: yes
+  stat:
+    path: /etc/systemd/system/docker.service.d
+  register: docker_folder
+
+- name: create docker.service.d
+  become: yes
+  shell:
+    cmd: mkdir /etc/systemd/system/docker.service.d
+  when: docker_folder.stat.exists == false
+
+
+- name: check http-proxy.conf directory exists
+  become: yes
+  stat:
+    path: /etc/systemd/system/docker.service.d/http-proxy.conf
+  register: docker_proxy_file
+
+- name: add docker proxy settings
+  become: yes
+  copy:
+    src: http-proxy.conf
+    dest: /etc/systemd/system/docker.service.d
+    owner: root
+    group: root
+  when: docker_proxy_file.stat.exists == false
+
+- name: check .docker directory exists
+  become: yes
+  stat:
+    path: ~/.docker
+  register: docker_config
+
+- name: create .docker
+  become: yes
+  shell:
+    cmd: mkdir ~/.docker
+  when: docker_config.stat.exists == false
+
+- name: check config.json directory exists
+  become: yes
+  stat:
+    path: ~/.docker/config.json
+  register: docker_config_json
+
+- name: add proxy settings
+  become: yes
+  copy:
+    src: config.json
+    dest: ~/.docker
+    owner: root
+    group: root
+  when: docker_config_json.stat.exists == false
+
+
+
+- name: reload daemon
+  become: yes
+  shell:
+    cmd: systemctl daemon-reload
+  environment: '{{proxy_env}}'
+
+- name: restart docker
+  become: yes
+  service:
+    name: docker
+    state: started
+  environment: '{{proxy_env}}'
+
+- name: add docker proxy settings
+  become: yes
+  copy:
+    src: harvester/docker-compose.yml
+    dest: /home/ubuntu
+    owner: root
+    group: root
+
+- name: add docker proxy settings
+  become: yes
+  copy:
+    src: harvester/Dockerfile
+    dest: /home/ubuntu
+    owner: root
+    group: root
+
+- name: add docker proxy settings
+  become: yes
+  copy:
+    src: harvester/TwitterHarvester.py
+    dest: /home/ubuntu
+    owner: root
+    group: root
+
+- name: change dir
+  become: yes
+  shell:
+    cmd: cd /home/ubuntu
+
+
+- name: Run docker compose up on server
+  become: yes
+  docker_compose:
+    project_src: /home/ubuntu
   environment: '{{proxy_env}}'
 
 
