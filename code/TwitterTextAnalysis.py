@@ -16,7 +16,7 @@ def process_json(doc):
 
 
 def main():
-    couch_url = "http://admin:mrcpasswordcouch@172.26.129.229:5984/"
+    couch_url = "http://admin:mrcpasswordcouch@172.26.134.25:5984/"
     couch = couchdb.Server(couch_url)
     row_limit = 5
     bookmark = None

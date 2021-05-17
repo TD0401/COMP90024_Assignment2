@@ -56,3 +56,15 @@ proxy_env:
   https_proxy: http://wwwproxy.unimelb.edu.au:8000/
   no_proxy: localhost,127.0.0.1,localaddress,172.16.0.0/12,.melbourne.rc.nectar.org.au,.storage.unimelb.edu.au,.cloud.unimelb.edu.au
 
+
+docker_proxy:
+  - name: "[Service]"
+  - name: Environment="HTTP_PROXY=http://wwwproxy.unimelb.edu.au:8000/"
+  - name: Environment="HTTPS_PROXY=http://wwwproxy.unimelb.edu.au:8000/"
+  - name: Environment="no_proxy=localhost,127.0.0.1,localaddress,172.16.0.0/12,.melbourne.rc.nectar.org.au,.storage.unimelb.edu.au,.cloud.unimelb.edu.au"
+  - name: Environment="http_proxy=http://wwwproxy.unimelb.edu.au:8000/"
+  - name: Environment="https_proxy=http://wwwproxy.unimelb.edu.au:8000/"
+
+
+ansible_playbook_docker: /Users/trinadey/Documents/Study/MSDS Melb/CloudComp/Assignments/COMP90024_Assignment2/ansible_scripts/roles/harvester-docker-install/tasks
+

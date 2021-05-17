@@ -53,3 +53,4 @@
   loop: '{{os_instances_ips}}'
   when: item.openstack is defined
 
+

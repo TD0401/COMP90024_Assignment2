@@ -20,4 +20,5 @@
   gather_facts: true
 
   roles:
+    - role: server-common
     - role: harvester-docker-install

@@ -24,4 +24,5 @@
   #  - include: frontend-handlers/handler.yaml
 
   roles:
-    - role: frontend-couch
+    - role: server-common
+    - role: couch-install
