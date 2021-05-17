@@ -1,11 +1,5 @@
 ---
-#- name: stop docker
-#  become: yes
-#  service:
-#    name: docker
-#    state: stopped
-
-- name: "uninstall old docker"
+- name: uninstall old docker
   tags: 'docker'
   become: yes
   apt:
@@ -68,14 +62,14 @@
     path: /etc/systemd/system/docker.service.d
   register: docker_folder
 
-- name: create docker.service.d
+- name: create docker.service.d if not present
   become: yes
   shell:
     cmd: mkdir /etc/systemd/system/docker.service.d
   when: docker_folder.stat.exists == false
 
 
-- name: check http-proxy.conf directory exists
+- name: check http-proxy.conf file exists
   become: yes
   stat:
     path: /etc/systemd/system/docker.service.d/http-proxy.conf
@@ -96,19 +90,19 @@
     path: ~/.docker
   register: docker_config
 
-- name: create .docker
+- name: create .docker if not present
   become: yes
   shell:
     cmd: mkdir ~/.docker
   when: docker_config.stat.exists == false
 
-- name: check config.json directory exists
+- name: check config.json file exists
   become: yes
   stat:
     path: ~/.docker/config.json
   register: docker_config_json
 
-- name: add proxy settings
+- name: add docker container proxy settings
   become: yes
   copy:
     src: config.json
@@ -116,7 +110,6 @@
     owner: root
     group: root
   when: docker_config_json.stat.exists == false
-
 
 
 - name: reload daemon
@@ -127,12 +120,12 @@
 
 - name: restart docker
   become: yes
-  service:
-    name: docker
-    state: started
+  shell:
+    cmd: systemctl restart docker
   environment: '{{proxy_env}}'
 
-- name: add docker proxy settings
+
+- name: copy docker compose file
   become: yes
   copy:
     src: harvester/docker-compose.yml
@@ -140,7 +133,7 @@
     owner: root
     group: root
 
-- name: add docker proxy settings
+- name: copy dockerfile
   become: yes
   copy:
     src: harvester/Dockerfile
@@ -148,7 +141,7 @@
     owner: root
     group: root
 
-- name: add docker proxy settings
+- name: copy code file
   become: yes
   copy:
     src: harvester/TwitterHarvester.py
@@ -166,6 +159,8 @@
   become: yes
   docker_compose:
     project_src: /home/ubuntu
+    build: yes
+    nocache: yes
   environment: '{{proxy_env}}'
 
 

@@ -3,7 +3,7 @@
   vars:
     ansible_python_interpreter: /usr/local/bin/python3
   vars_files:
-    - host_vars/group-3-frontend.yaml
+    - host_vars/couch-instance-vars.yaml
   gather_facts: true
 
   roles:
@@ -16,7 +16,7 @@
 
 - hosts: inst-couchDB2
   vars_files:
-    - host_vars/group-3-frontend.yaml
+    - host_vars/couch-instance-vars.yaml
     - host_vars/couchDB_vars.yaml
   gather_facts: true
 

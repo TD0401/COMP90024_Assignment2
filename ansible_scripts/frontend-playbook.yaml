@@ -3,7 +3,7 @@
   vars:
     ansible_python_interpreter: /usr/local/bin/python3
   vars_files:
-    - host_vars/harvester-vars.yaml
+    - host_vars/frontend-vars.yaml
   gather_facts: true
 
   roles:
@@ -14,11 +14,11 @@
 
 
 
-- hosts: harvester-instance-1
+- hosts: frontend-instance
   vars_files:
-    - host_vars/harvester-vars.yaml
+    - host_vars/frontend-vars.yaml
   gather_facts: true
 
   roles:
     - role: server-common
-    - role: harvester-docker-install
+    - role: frontend-docker-install

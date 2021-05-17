@@ -199,8 +199,8 @@ def parse_and_store(db, tweet_json, index, geo_name, account_name):
         try:
             if tweet_json['coordinates'] is not None:
                 if tweet_json['coordinates']['coordinates'] is not None:
-                    json_data['coordinates_lat']= tweet_json['coordinates']['coordinates'][0]
-                    json_data['coordinates_lng']= tweet_json['coordinates']['coordinates'][1]
+                    json_data['coordinates_lat']= tweet_json['coordinates']['coordinates'][1]
+                    json_data['coordinates_lng']= tweet_json['coordinates']['coordinates'][0]
         except KeyError as e:
             print(str(e))
         except:

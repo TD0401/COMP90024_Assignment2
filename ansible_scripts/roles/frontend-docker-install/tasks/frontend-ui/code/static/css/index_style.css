@@ -1,0 +1,8 @@
+body {
+    /* background-color: #a7d0cd; */
+    background-image: url("/templates/static/imgs/bg8.jpg"); 
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100%
+}

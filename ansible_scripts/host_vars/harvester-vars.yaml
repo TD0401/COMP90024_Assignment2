@@ -66,5 +66,4 @@ docker_proxy:
   - name: Environment="https_proxy=http://wwwproxy.unimelb.edu.au:8000/"
 
 
-ansible_playbook_docker: /Users/trinadey/Documents/Study/MSDS Melb/CloudComp/Assignments/COMP90024_Assignment2/ansible_scripts/roles/harvester-docker-install/tasks
 

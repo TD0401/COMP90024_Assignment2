@@ -1,11 +1,25 @@
 ---
-- name: "uninstall old docker"
+- name: install nginx
+  become: yes
+  apt:
+    name: nginx
+    state: present
+
+- name: copy code file
+  become: yes
+  copy:
+    src: /usr/local/etc/nginx/nginx.conf
+    dest: /etc/nginx/nginx.conf
+    owner: root
+    group: root
+
+- name: uninstall old docker
   tags: 'docker'
   become: yes
-  apt: 
+  apt:
     name: ['docker', 'docker-engine', 'docker.io']
     state: absent
-  
+
 - name: install dependencies
   tags: 'docker'
   become: yes
@@ -14,6 +28,7 @@
     state: latest
     install_recommends: no
     update_cache: yes
+  environment: '{{proxy_env}}'
 
 - name: Add docker apt repo key
   tags: 'docker'
@@ -21,26 +36,220 @@
   apt_key:
     url: http://download.docker.com/linux/ubuntu/gpg
     state: present
+  environment: '{{proxy_env}}'
 
 - name: Add docker apt repo key and update cache
   tags: 'docker'
   become: yes
-  apt_repository: 
+  apt_repository:
     repo: "deb http://download.docker.com/linux/ubuntu/ focal stable"
     mode: '644'
     update_cache: yes
     state: present
+  environment: '{{proxy_env}}'
 
 - name: Install docker
   become: yes
   apt:
     name: docker
-    
+    state: present
+  environment: '{{proxy_env}}'
+
+- name: Install docker.io
+  become: yes
+  apt:
+    name: docker.io
+    state: present
+  environment: '{{proxy_env}}'
 
 - name: Install docker_compose
   become: yes
   apt:
     name: docker-compose
+    state: latest
+  environment: '{{proxy_env}}'
+
+
+- name: check docker.services.d directory exists
+  become: yes
+  stat:
+    path: /etc/systemd/system/docker.service.d
+  register: docker_folder
+
+- name: create docker.service.d if not present
+  become: yes
+  shell:
+    cmd: mkdir /etc/systemd/system/docker.service.d
+  when: docker_folder.stat.exists == false
+
+
+- name: check http-proxy.conf file exists
+  become: yes
+  stat:
+    path: /etc/systemd/system/docker.service.d/http-proxy.conf
+  register: docker_proxy_file
+
+- name: add docker proxy settings
+  become: yes
+  copy:
+    src: http-proxy.conf
+    dest: /etc/systemd/system/docker.service.d
+    owner: root
+    group: root
+  when: docker_proxy_file.stat.exists == false
+
+- name: check .docker directory exists
+  become: yes
+  stat:
+    path: ~/.docker
+  register: docker_config
+
+- name: create .docker if not present
+  become: yes
+  shell:
+    cmd: mkdir ~/.docker
+  when: docker_config.stat.exists == false
+
+- name: check config.json file exists
+  become: yes
+  stat:
+    path: ~/.docker/config.json
+  register: docker_config_json
+
+- name: add docker container proxy settings
+  become: yes
+  copy:
+    src: config.json
+    dest: ~/.docker
+    owner: root
+    group: root
+  when: docker_config_json.stat.exists == false
+
+
+- name: reload daemon
+  become: yes
+  shell:
+    cmd: systemctl daemon-reload
+  environment: '{{proxy_env}}'
+
+
+- name: restart docker
+  become: yes
+  shell:
+    cmd: systemctl restart docker
+  environment: '{{proxy_env}}'
+
+- name: check backend directory exists
+  become: yes
+  stat:
+    path: /home/ubuntu/backend
+  register: backend_folder
+
+- name: create backend if not present
+  become: yes
+  shell:
+    cmd: mkdir /home/ubuntu/backend
+  when: backend_folder.stat.exists == false
+
+- name: copy docker compose file for flask
+  become: yes
+  copy:
+    src: backend-api/docker-compose.yml
+    dest: /home/ubuntu/backend
+    owner: root
+    group: root
+
+- name: copy dockerfile flask
+  become: yes
+  copy:
+    src: backend-api/Dockerfile
+    dest: /home/ubuntu/backend
+    owner: root
+    group: root
+
+- name: copy code file flask
+  become: yes
+  copy:
+    src: backend-api/app.py
+    dest: /home/ubuntu/backend
+    owner: root
+    group: root
+
+- name: change dir
+  become: yes
+  shell:
+    cmd: cd /home/ubuntu/backend
+
+
+- name: Run docker compose up on server for flask
+  become: yes
+  docker_compose:
+    project_src: /home/ubuntu/backend
+    build: yes
+    nocache: yes
+  environment: '{{proxy_env}}'
+
+
+# front end deployment files
+- name: check frontend directory exists
+  become: yes
+  stat:
+    path: /home/ubuntu/frontend
+  register: frontend_folder
+
+- name: create frontend directory if not present
+  become: yes
+  shell:
+    cmd: mkdir /home/ubuntu/frontend
+  when: frontend_folder.stat.exists == false
+
+
+- name: copy docker compose file for front end
+  become: yes
+  copy:
+    src: frontend-ui/docker-compose.yml
+    dest: /home/ubuntu/frontend
+    owner: root
+    group: root
+
+- name: copy dockerfile for front end
+  become: yes
+  copy:
+    src: frontend-ui/Dockerfile
+    dest: /home/ubuntu/frontend
+    owner: root
+    group: root
+
+- name: copy code file for front end
+  become: yes
+  copy:
+    src: frontend-ui/code
+    dest: /home/ubuntu/frontend
+    owner: root
+    group: root
+
+
+- name: change dir
+  become: yes
+  shell:
+    cmd: cd /home/ubuntu/frontend
+
+
+- name: Run docker compose up on server for frontend
+  become: yes
+  docker_compose:
+    project_src: /home/ubuntu/frontend
+    build: yes
+    nocache: yes
+  environment: '{{proxy_env}}'
+
+- name: start nginx
+  become: yes
+  shell:
+    cmd: systemctl restart nginx
+  environment: '{{proxy_env}}'
+
+
 
 
 

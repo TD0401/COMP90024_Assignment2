@@ -5,6 +5,6 @@
     dest: /etc/environment
     state: present
     line: "{{ item.key }}={{ item.value }}"
-    regexp: "^{{ item.key }}= "
+    regexp: "^{{ item.key }}="
     insertafter: "^PATH$"
   with_dict: "{{ proxy_env }}"

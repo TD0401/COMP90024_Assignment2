@@ -1,0 +1,82 @@
+body {
+    /* background-color: #dbf6e9; */
+    background-image: url("/templates/static/imgs/bg8.jpg"); 
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100%
+}
+
+.container{
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: auto;
+    padding-right: auto;
+}
+
+#dayBars1{
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#horzBar{
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#hourBars2 {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#tweetDashboard {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    /* padding-right: 3px; */
+    padding-left: 3px;
+    padding-top: 3px;
+    font-family: Verdana, sans-serif;
+}
+
+#row3 {
+    margin-top: 5px;
+}
+
+#mapCluster {
+    margin-left: auto;
+    margin-right: auto;
+    height: 500px;
+    width: 900px;
+}
+
+#topicsPie {
+    height: 300px;
+}
+
+select{
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 1%;
+    margin-bottom: 2px;
+    padding-bottom: 1px;
+    display: block;
+    /* background-color: transparent; */
+    border: none;
+    font-size: large;
+    background-color:  rgb(26, 88, 114);
+    color: whitesmoke;
+    outline: none;
+}
+
+.well {
+    margin-left: auto;
+    margin-right: auto;
+    background-color: aliceblue;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding-bottom: auto;
+    padding-left: 10px;
+    font-weight: bold;
+    outline: rgb(16, 17, 17);
+    height: 50px;
+}

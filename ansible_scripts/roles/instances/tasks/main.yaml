@@ -48,9 +48,21 @@
     ansible_python_interpreter: /usr/bin/python3
     ansible_ssh_user: ubuntu
     ansible_user: ubuntu
-    ansible_ssh_private_key_file: /Users/trinadey/.ssh/new_key_sm.pem
+    ansible_ssh_private_key_file: new_key_sm.pem
     ansible_ssh_common_args: '-o StrictHostKeyChecking=no'
   loop: '{{os_instances_ips}}'
   when: item.openstack is defined
+
+- name: updating a js file for frontend with ipaddress created
+  become: yes
+  lineinfile:
+    path: roles/frontend-docker-install/tasks/frontend-ui/code/static/js/ip.js
+    state: present
+    line: "ip_addr=\"{{ item.openstack.public_v4 }}\""
+    regexp: "^ip_addr="
+  loop: '{{os_instances_ips}}'
+  delegate_to: localhost
+
+
 
 
