@@ -3,16 +3,33 @@ the skip param sets the page offset
 and limit sets the records to be fetched.
 
 countByLatLng
-curl --location --request GET 'http://172.26.129.229:5984/twitterfeed/_partition/partition0/_design/TweetCountLatLng/_view/countByLatLng?reduce=true&group=true&update=lazy&skip=20&limit=10' \
+curl --location --request GET 'http://172.26.129.229:5984/twitterfeed/_design/TweetCountLatLng/_view/countByLatLng?reduce=true&group=true&update=lazy&skip=20&limit=10' \
 --header 'accept: application/json' \
 --header 'Content-Type: application/json' \
 --header 'Authorization: Basic YWRtaW46bXJjcGFzc3dvcmRjb3VjaA=='
 
 
 countByState
-curl --location --request GET 'http://172.26.129.229:5984/twitterfeed/_partition/partition0/_design/TweetCountLatLng/_view/countByState?reduce=true&group=true&update=lazy&skip=20&limit=10' \
+curl --location --request GET 'http://172.26.129.229:5984/twitterfeed/_design/TweetCountLatLng/_view/countByState?reduce=true&group=true&update=lazy&skip=20&limit=10' \
 --header 'accept: application/json' \
 --header 'Content-Type: application/json' \
 --header 'Authorization: Basic YWRtaW46bXJjcGFzc3dvcmRjb3VjaA=='
 
+countByHour
+curl --location --request GET 'http://172.26.129.229:5984/twitterfeed/_design/TweetCountLatLng/_view/countByHour?reduce=true&group=true&update=lazy&skip=0&limit=10' \
+--header 'accept: application/json' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Basic YWRtaW46bXJjcGFzc3dvcmRjb3VjaA=='
+
+countByDay
+curl --location --request GET 'http://172.26.129.229:5984/twitterfeed/_design/TweetCountLatLng/_view/countByDay?reduce=true&group=true&update=lazy&skip=0&limit=10' \
+--header 'accept: application/json' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Basic YWRtaW46bXJjcGFzc3dvcmRjb3VjaA=='
+
+count of all the twitter in database
+curl --location --request GET 'http://172.26.134.25:5984/twittertest/_design/counts/_view/all?group=true' \
+--header 'accept: application/json' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Basic YWRtaW46bXJjcGFzc3dvcmRjb3VjaA=='
 
