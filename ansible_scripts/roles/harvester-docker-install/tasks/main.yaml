@@ -118,6 +118,7 @@
     cmd: systemctl daemon-reload
   environment: '{{proxy_env}}'
 
+
 - name: restart docker
   become: yes
   shell:
@@ -125,11 +126,26 @@
   environment: '{{proxy_env}}'
 
 
+# harvester deployment files
+- name: check harvester directory exists
+  become: yes
+  stat:
+    path: /home/ubuntu/harvester
+  register: harvester_folder
+
+- name: create harvester directory if not present
+  become: yes
+  shell:
+    cmd: mkdir /home/ubuntu/harvester
+  when: harvester_folder.stat.exists == false
+
+
+
 - name: copy docker compose file
   become: yes
   copy:
     src: harvester/docker-compose.yml
-    dest: /home/ubuntu
+    dest: /home/ubuntu/harvester
     owner: root
     group: root
 
@@ -137,7 +153,7 @@
   become: yes
   copy:
     src: harvester/Dockerfile
-    dest: /home/ubuntu
+    dest: /home/ubuntu/harvester
     owner: root
     group: root
 
@@ -145,28 +161,81 @@
   become: yes
   copy:
     src: harvester/TwitterHarvester.py
-    dest: /home/ubuntu
+    dest: /home/ubuntu/harvester
     owner: root
     group: root
 
 - name: change dir
   become: yes
   shell:
-    cmd: cd /home/ubuntu
+    cmd: cd /home/ubuntu/harvester
 
 
 - name: Run docker compose up on server
   become: yes
   docker_compose:
-    project_src: /home/ubuntu
+    project_src: /home/ubuntu/harvester
     build: yes
     nocache: yes
   environment: '{{proxy_env}}'
 
 
+# analysis deployment files
+- name: check analysis directory exists
+  become: yes
+  stat:
+    path: /home/ubuntu/analysis
+  register: analysis_folder
+
+- name: create analysis directory if not present
+  become: yes
+  shell:
+    cmd: mkdir /home/ubuntu/analysis
+  when: analysis_folder.stat.exists == false
+
+- name: copy docker compose file
+  become: yes
+  copy:
+    src: analysis/docker-compose.yml
+    dest: /home/ubuntu/analysis
+    owner: root
+    group: root
+
+- name: copy dockerfile
+  become: yes
+  copy:
+    src: analysis/Dockerfile
+    dest: /home/ubuntu/analysis
+    owner: root
+    group: root
+
+- name: copy code file
+  become: yes
+  copy:
+    src: analysis/analysis.py
+    dest: /home/ubuntu/analysis
+    owner: root
+    group: root
+
+- name: copy code dataset folder
+  become: yes
+  copy:
+    src: analysis/AURIN_datasets
+    dest: /home/ubuntu/analysis
+    owner: root
+    group: root
+
+- name: change dir
+  become: yes
+  shell:
+    cmd: cd /home/ubuntu/analysis
 
 
-
-
-
+- name: Run docker compose up on server
+  become: yes
+  docker_compose:
+    project_src: /home/ubuntu/analysis
+    build: yes
+    nocache: yes
+  environment: '{{proxy_env}}'
 

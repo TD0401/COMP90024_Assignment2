@@ -1,0 +1,16 @@
+pip install pandas
+pip install numpy
+pip install nltk
+pip install corpora
+pip install empath
+pip install scikit-learn
+pip install gensim
+pip install matplotlib
+pip install seaborn
+pip install geojson
+pip install shapely
+
+nltk.download('stopwords')
+
+
+PS: can't find victoriaTweet.json

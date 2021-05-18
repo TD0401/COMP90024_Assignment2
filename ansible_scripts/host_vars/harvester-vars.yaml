@@ -41,7 +41,7 @@ security_groups:
 instances:
   - name: harvester-instance-1
     volume: ['harvester-vol-1']
-    instance_flavor: uom.mse.1c4g
+    instance_flavor: uom.mse.2c9g
 #  - name: frontend-instance
 #    volume: ['frontend-vol']
 #    instance_flavor: uom.mse.1c4g
