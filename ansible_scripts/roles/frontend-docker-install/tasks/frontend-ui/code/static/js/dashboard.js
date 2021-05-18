@@ -1,147 +1,126 @@
 const API_KEY = "pk.eyJ1IjoiZXpnYWxsbzg3IiwiYSI6ImNraWlqOWNkZzBhMTEyeW9kZTFsYWV2eXMifQ.FIAMf-ix0ER-CwPLhc02xg"
 
-var state_count = "http://" + ip_addr+ "/api/dashboard/stateCounts"
-var map_data = "http://"+ip_addr+"/api/dashboard/locationCounts"
-var daily_count = "http://"+ip_addr+"/api/dashboard/dailyCount"
-var hourly_count = "http://"+ip_addr+"/api/dashboard/hourlyCount"
+var state_count = "http://" + ip_addr + "/api/dashboard/stateCounts"
+var map_data = "http://"+ ip_addr +"/api/dashboard/locationCounts"
+var daily_count = "http://"+ ip_addr +"/api/dashboard/dailyCount"
+var hourly_count = "http://"+ ip_addr +"/api/dashboard/hourlyCount"
 
 
 function init(){
-    
-  // Read samples.json
-  d3.json("static/data/plotlysamples.json").then((jsonObject) =>{
     d3.json(state_count).then((statesObject)=>{
-      
-      console.log(statesObject);
-      // console.log(statesObject.map(object => object.state));
+
       d3.select("#selState").selectAll("option")
           .data(statesObject)
           .enter()
           .append('option')
           .html(statesObject => statesObject.state);
-      
-      // //////   DUMMY \\\\\\\\\\\\\\\\\\\\\\\\\
-      // console.log("DUMMY DATA")
-          
-      // add all of the IDs to the drop down menu
-      // d3.select("#selDataset").selectAll("option")
-      //     .data(jsonObject.samples)
-      //     .enter()
-      //     .append('option')
-      //     .html(samples => samples.id);
-      
-      // plotlyPlot("940");  
-      
+
       stateCountPlot();
-      daysPlotly("WA");
-      hoursPlotly("WA");
+      daysPlotly(statesObject[0].state);
+      hoursPlotly(statesObject[0].state);
 
       // Call updatePlotly() when a change takes place to the DOM
       d3.selectAll("#selState").on("change", updatePlotly);
-      
-    });     
-  })
+
+    });
+
 }
 
-init()
-
-//                                   UPDATE  PLOT                          \\
+//                                   UPDATE  PLOT
 // This function is called when a dropdown menu item is selected
 function updatePlotly() {
-  // Read samples.json     
   // Use D3 to select the dropdown menu for IDs
   var state = d3.select("#selState").property("value");
-  // statePlotly(datasetID);
-  
+
   daysPlotly(state);
   hoursPlotly(state);
-      
+
 }
 
 
-/////////////////////////////////////      Horizontal Bar Chart         \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ 
-/////////////////////////////////////      DUMMY FUNCTION        \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ 
+/////////////////////////////////////      Horizontal Bar Chart         \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+/////////////////////////////////////      DUMMY FUNCTION        \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
 function plotlyPlot(id){
-    
+
     d3.json("static/data/plotlysamples.json").then((jsonObject) =>{
-        
+
         ////////////////////       CHARTING VARIABLES     \\\\\\\\\\\\\\\\\\\\\\\\\
-      
+
         var filteredData = jsonObject.samples.filter(data => data.id.toString() === id);
         // console.log(filteredData)
-        // console.log(jsonObject) 
-        
-        var sample_values = filteredData[0].sample_values  
+        // console.log(jsonObject)
+
+        var sample_values = filteredData[0].sample_values
         // console.log(sample_values);
-    
+
         var otu_ids = filteredData[0].otu_ids
         var otu_labels = filteredData[0].otu_labels
-        
+
         // zipping sample values and OTU ids so that I can know which ID belongs to which value when sorting
         // index 0 = sample_values ; index 1 = OTU_id
         var zip = sample_values.map((sv, i) =>{
             return [sv, otu_ids[i], otu_labels[i]]
         });
-        
+
         // console.log(zip);
-    
+
         //sorting by sample values
         var clean_data = zip.sort((a, b) => b[0] - a[0]).slice(0,10).reverse();
         // console.log("THIS IS CLEAN_DATA")
         // console.log(clean_data);
-        
+
         sampleValues = clean_data.map(object => object[0]);
         console.log(sampleValues);
-    
+
         outIDs = clean_data.map(object => `OTU ${object[1]}`);
         // console.log("THIS Y AXIS")
         // console.log(outIDs);
-    
+
         hover_text = clean_data.map(object => object[2]);
-        
+
       //   bar and pie chart for Dummy Graphs \\
-        
+
         // Trace1 for bar charts
         var trace1 = {
             x: sampleValues,
             y: outIDs,
             text: hover_text,
             type: "bar",
-            orientation: "h",    
+            orientation: "h",
         };
-        
+
         var trace2 = {
             values: sampleValues,
             labels: outIDs,
             hovertext: hover_text,
-            type: "pie",        
+            type: "pie",
         };
-        
+
         // data
         var dataBar = [trace1];
         var dataPie = [trace2];
-        
+
         // Apply the group bar mode to the layout
         var layout = {
             title: `Top 10 OTU IDs for ID ${id}`,
             plot_bgcolor:"#dbf6e9",
             paper_bgcolor:"#dbf6e9"
         };
-        
+
         // Render the plot to the div tag with id "bar"
         Plotly.newPlot("horzBar", dataBar, layout);
-        
+
         // Render the plot to the div tag with id "pie"
         Plotly.newPlot("topicsPie", dataPie, layout);
     });
 };
-/////////////////////////////////////      END DUMMY FUNCTION         \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ 
+/////////////////////////////////////      END DUMMY FUNCTION         \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
 function stateCountPlot() {
   d3.json(state_count).then((statesObject)=>{
-    
-    
+
+
     sorted = statesObject.sort((a, b) => b.value - a.value).reverse();
     // console.log(sorted);
     var x_axis = sorted.map(object => object.value);
@@ -161,12 +140,12 @@ function stateCountPlot() {
         // color: '#008891'
         color: '#c6ebc9'
         // width: 1
-      }    
+      }
     };
 
     // data
     var dataBar = [trace1];
-    
+
     // Apply the group bar mode to the layout
     var layout = {
       title: {
@@ -202,7 +181,7 @@ function stateCountPlot() {
     // Render the plot to the div tag with id "bar"
     Plotly.newPlot("horzBar", dataBar, layout);
 
-  }); 
+  });
 }
 
 
@@ -211,15 +190,15 @@ function stateCountPlot() {
 function daysPlotly(state) {
 
   d3.json(daily_count).then((object) => {
-    
+
     var filteredData = object.filter(data => data.state.toString() === state);
     // console.log(filteredData);
 
     var x_axis = ["Mon", "Tues", "Wed", "Thurs", "Fri", "Sat", "Sun"];
-    
+
     // var y_axis = filteredData.map(data => data.value);
     // console.log(y_axis);
-    
+
     var mon = filteredData.filter(data=> data.day.toString() === "Mon")
     var monData = mon[0].value;
 
@@ -231,13 +210,13 @@ function daysPlotly(state) {
 
     var th = filteredData.filter(data=> data.day.toString() === "Thu")
     var thuData = th[0].value;
-    
+
     var fr = filteredData.filter(data=> data.day.toString() === "Fri")
     var frData = fr[0].value;
-    
+
     var sat = filteredData.filter(data=> data.day.toString() === "Sat")
     var satData = sat[0].value;
-    
+
     var sun = filteredData.filter(data=> data.day.toString() === "Sun")
     var sunData = sun[0].value;
 
@@ -256,7 +235,7 @@ function daysPlotly(state) {
           // width: 1
         }
       }];
-    
+
     var layout = {
       title: {
         text: `Daily Tweet Count for ${state}`,
@@ -265,7 +244,7 @@ function daysPlotly(state) {
           size: 25,
         }
       },
-      
+
       showlegend: false,
       xaxis: {
         tickangle: -45,
@@ -292,7 +271,7 @@ function daysPlotly(state) {
       plot_bgcolor:"rgba(0,0,0,0)",
       paper_bgcolor:"rgba(0,0,0,0)"
     };
-    
+
     Plotly.newPlot('dayBars1', data, layout);
   });
 }
@@ -321,7 +300,7 @@ function hoursPlotly(state){
           color: 'rgb(26, 88, 114)'
         }
       }];
-    
+
     var layout = {
       title: {
         text:  `Hourly Tweet Count for ${state}`,
@@ -339,7 +318,7 @@ function hoursPlotly(state){
             family: 'Verdana, sans-serif',
             size: 17
           }
-        }  
+        }
       },
       yaxis: {
         zeroline: false,
@@ -356,7 +335,7 @@ function hoursPlotly(state){
       plot_bgcolor:"rgba(0,0,0,0)",
       paper_bgcolor:"rgba(0,0,0,0)"
     };
-    
+
     Plotly.newPlot('hourBars2', data, layout);
 
   });
@@ -371,23 +350,16 @@ function hoursPlotly(state){
 
 //////////////////////            MAP Cluster         \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
-// Store our API endpoint inside queryUrl
-// var queryUrl = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/significant_month.geojson"
+function map_load(){
+    url = map_data + "?skip=0";
 
-// Perform a GET request to the query URL
-d3.json(map_data).then((data) =>{
-  
-  // console.log("INITIAL LOG");
-  // console.log(data);
-
-  // Once we get a response, send the data.features object to the createFeatures function
-  // array of json objects 
-  // var dataArray = data.features
-  // console.log(dataArray);
-
-  createFeatures(data);
-
-});
+    d3.json(url).then((data) =>{
+         console.log("INITIAL LOG"  );
+         console.log(data);
+         myMap = createFeatures(data);
+         addFeatures(myMap);
+    });
+}
 
 function getColour(count) {
   // console.log(count);
@@ -418,12 +390,50 @@ function getColour(count) {
   }
 }
 
+function sleep(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function addFeatures(myMap,twitData) {
+    count_success = 0 ;
+    for ( i = 1 ; i < 1000 ; i++){
+        url = map_data + "?skip=" + (i*5000)
+        d3.json(url).then((twitData) =>{
+           console.log("FURTHER LOG" + i );
+           console.log(twitData);
+
+          function onEachFeature(feature, layer) {
+            layer.bindPopup("<p>" + feature.properties.place +
+              "</p><hr><p>" + feature.properties.count + "</p>");
+          }
+
+          // Create a GeoJSON layer containing the features array on the earthquakeData object
+          // Run the onEachFeature function once for each piece of data in the array
+          var twitts = L.geoJSON(twitData, {
+            pointToLayer: function (feature, latlng) {
+              var geojsonMarkerOptions = {
+                  radius: feature.properties.count/10000,
+                  fillColor: getColour(feature.properties.count),
+                  // color: 'white',
+                  weight: 1,
+                  opacity: 1,
+                  fillOpacity: 1
+              };
+              return L.circleMarker(latlng, geojsonMarkerOptions)
+            },
+
+            onEachFeature: onEachFeature
+          }).addTo(myMap);
+          count_success++;
+        });
+        if(count_success%3 == 0 )
+            await sleep(5000);
+    }
+
+}
 
 
 function createFeatures(twitData) {
-
-  // console.log("CREATE FEATURES");
-  // console.log(twitData);
   // Define a function we want to run once for each feature in the features array
   // Give each feature a popup describing the place and time of the earthquake
   function onEachFeature(feature, layer) {
@@ -433,7 +443,7 @@ function createFeatures(twitData) {
   }
 
   // Create a GeoJSON layer containing the features array on the earthquakeData object
-  // Run the onEachFeature function once for each piece of data in the array  
+  // Run the onEachFeature function once for each piece of data in the array
   var twitts = L.geoJSON(twitData, {
     pointToLayer: function (feature, latlng) {
       var geojsonMarkerOptions = {
@@ -446,12 +456,12 @@ function createFeatures(twitData) {
       };
       return L.circleMarker(latlng, geojsonMarkerOptions)
     },
-    
+
     onEachFeature: onEachFeature
   });
-  
+
   // Sending our earthquakes layer to the createMap function
-  createMap(twitts);
+  return createMap(twitts);
 }
 
 function createMap(twitter) {
@@ -465,26 +475,26 @@ function createMap(twitter) {
       id: "mapbox/streets-v11",
       accessToken: API_KEY
     });
-  
+
     var darkmap = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
       attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
       maxZoom: 18,
       id: "dark-v10",
       accessToken: API_KEY
     });
-  
+
     // Define a baseMaps object to hold our base layers
     var baseMaps = {
       "Street Map": streetmap,
       "Dark Map": darkmap
     };
-  
+
     // console.log(earthquakes);
     // Create overlay object to hold our overlay layer
     var overlayMaps = {
       Tweets: twitter
     };
-  
+
     // Create our map, giving it the streetmap and earthquakes layers to display on load
     var myMap = L.map("mapCluster", {
       center: [
@@ -493,11 +503,21 @@ function createMap(twitter) {
       zoom: 4,
       layers: [streetmap, twitter]
     });
-  
+
     // Create a layer control
     // Pass in our baseMaps and overlayMaps
     // Add the layer control to the map
     L.control.layers(baseMaps, overlayMaps, {
       collapsed: false
-    }).addTo(myMap); 
+    }).addTo(myMap);
+
+    return myMap;
 }
+
+
+function callsequence(){
+    init();
+    map_load();
+}
+
+callsequence();

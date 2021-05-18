@@ -21,8 +21,8 @@ function init(){
           .html(statesObject => statesObject.state);
       
       stateCountPlot();
-      daysPlotly("WA");
-      hoursPlotly("WA");
+      daysPlotly(statesObject[0].state);
+      hoursPlotly(statesObject[0].state);
 
       // Call updatePlotly() when a change takes place to the DOM
       d3.selectAll("#selState").on("change", updatePlotly);
