@@ -1,14 +1,5 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# #### COMP90024 Cluster and Cloud Computing
-
-# # Group Project - Sentiment and Topic Analysis
-
-# ---
-
-# In[408]:
-
+##### COMP90024 Cluster and Cloud Computing #####
+##### Sentiment and Topic Analysis #####
 
 #import required packages
 import re
@@ -33,9 +24,9 @@ from gensim.models import TfidfModel
 from gensim.models.ldamodel import LdaModel
 
 #Download required datasets
-#nltk.download("stopwords")
-#nltk.download("vader_lexicon")
-#nltk.download("averaged_perceptron_tagger")
+nltk.download("stopwords")
+nltk.download("vader_lexicon")
+nltk.download("averaged_perceptron_tagger")
 
 #Import plotting packages
 import matplotlib.pyplot as plt
@@ -50,13 +41,6 @@ from shapely.geometry.polygon import Polygon
 #ignore FutureWarnings
 import warnings
 warnings.filterwarnings("ignore", category = FutureWarning)
-
-
-# ### ETL
-
-# #### (i) Import data
-
-# In[2]:
 
 
 #define function for data extraction
@@ -86,17 +70,14 @@ def extract(file_path, col_index, col_name):
     return df
 
 
-# In[353]:
-
-
-#Import requried data
+#(i) Import requried data
 twitter = pd.read_json("victoriaTweet.json")
 
 #Extract AURIN datasets
 aurin = {}
-filename = {"worklife": "AURIN_datasets/adequate_worklife.json",
-            "sleep": "AURIN_datasets/inadequate_sleep.json",
-            "lacktime": "AURIN_datasets/lacking_time.json",
+filename = {"worklife": "AURIN_datasets/adequate_worklife.json",\
+            "sleep": "AURIN_datasets/inadequate_sleep.json",\
+            "lacktime": "AURIN_datasets/lacking_time.json",\
             "pressure": "AURIN_datasets/time_pressure.json"}
 
 for name, dataset in filename.items():
@@ -104,36 +85,30 @@ for name, dataset in filename.items():
     col_name = ["lga_code", "lga_name", name, "ci_high", "ci_low"]
     aurin[name] = extract(dataset, col_index, col_name)
 
-aurin["income"] = extract("AURIN_datasets/personal_income.json", np.r_[3,4,2],
-                          ["lga_code", "lga_name", "median_income"])
-aurin["age"] = extract("AURIN_datasets/median_age.json", np.r_[7,4,5],
-                       ["lga_code", "lga_name", "median_age"])
-aurin["profile"] = extract("AURIN_datasets/lga_profile.json", np.r_[5,4,2,3,6:13],
-                           ["lga_code", "lga_name", "unemploy_rate", "physical_activity", "not_yr12", "offences",
-                           "good_facilities", "distress", "food_insecurity", "higher_edu", "poor_health"])
+aurin["income"] = extract("AURIN_datasets/personal_income.json", np.r_[3,4,2],\
+    ["lga_code", "lga_name", "median_income"])
+
+aurin["age"] = extract("AURIN_datasets/median_age.json", np.r_[7,4,5],\
+    ["lga_code", "lga_name", "median_age"])
+
+aurin["profile"] = extract("AURIN_datasets/lga_profile.json", np.r_[5,4,2,3,6:13],\
+    ["lga_code", "lga_name", "unemploy_rate", "physical_activity", "not_yr12", "offences",\
+        "good_facilities", "distress", "food_insecurity", "higher_edu", "poor_health"])
 
 #Extract LGA polygons
-aurin["lga_polygon"] = extract("AURIN_datasets/lga_regions.json", np.r_[4,7,3],
-                               ["lga_code", "lga_name", "lga_polygon"])
+aurin["lga_polygon"] = extract("AURIN_datasets/lga_regions.json", np.r_[4,7,3],\
+    ["lga_code", "lga_name", "lga_polygon"])
 
 #Merge extracted datasets into one df
-data = reduce(lambda x,y: pd.merge(x, y, on = "lga_code", how = "left"),
-              [aurin["worklife"][["lga_code", "lga_name", "worklife"]], aurin["sleep"][["lga_code", "sleep"]],
-               aurin["lacktime"][["lga_code", "lacktime"]], aurin["pressure"][["lga_code", "pressure"]],
-               aurin["income"][["lga_code", "median_income"]], aurin["age"][["lga_code", "median_age"]],
-               aurin["profile"][["lga_code", "unemploy_rate", "physical_activity", "not_yr12", "offences",
-                                 "good_facilities", "distress", "food_insecurity", "higher_edu", "poor_health"]],
-               aurin["lga_polygon"][["lga_code", "lga_polygon"]]])
+data = reduce(lambda x,y: pd.merge(x, y, on = "lga_code", how = "left"),\
+    [aurin["worklife"][["lga_code", "lga_name", "worklife"]], aurin["sleep"][["lga_code", "sleep"]],\
+        aurin["lacktime"][["lga_code", "lacktime"]], aurin["pressure"][["lga_code", "pressure"]],\
+            aurin["income"][["lga_code", "median_income"]], aurin["age"][["lga_code", "median_age"]],\
+                aurin["profile"][["lga_code", "unemploy_rate", "physical_activity", "not_yr12", "offences",\
+                    "good_facilities", "distress", "food_insecurity", "higher_edu", "poor_health"]],\
+                        aurin["lga_polygon"][["lga_code", "lga_polygon"]]])
 
-data
-
-
-# #### (ii) Tokenize tweets
-
-# In[59]:
-
-
-#Tokenize tweet text
+#(ii) Tokenize tweet text
 def tokenize(df, stopwords):
     """
     Tokenizes tweet text, i.e. separates tweet text into individual tokens, while replacing 
@@ -163,92 +138,52 @@ def tokenize(df, stopwords):
     
     return df
 
-
-# In[363]:
-
-
 #Peform tokenization of tweets
 stopwords = stpwrd.words("english") + list(string.punctuation) + ["“", "”", "’", "...", "..", "…"]
 twitter = tokenize(twitter, stopwords)
 twitter["tokenized_text"] = twitter["tokenized_text"].apply(lambda tokens: " ".join(tokens))
 
 
-# ### Sentiment Analysis
+##### Sentiment Analysis ##### 
 
-# #### (i) Perform sentiment analysis
-
-# In[ ]:
-
-
-#Perform sentiment analysis using VADER
+#(i) Perform sentiment analysis using VADER
 sid = SentimentIntensityAnalyzer()
 #extract only compound sentiment polarity score
 twitter["sentiment"] = twitter["tokenized_text"].apply(lambda text: sid.polarity_scores(text)["compound"])
-
-
-# In[394]:
-
 
 #Plot distribution of sentiments scores
 fig, ax = plt.subplots(figsize = (15, 10))
 n_bins = 20
 sns.distplot(twitter["sentiment"], bins = n_bins, color = "darkviolet", kde_kws = {"linewidth": 2})
-
 ax.tick_params(axis = "both", labelsize = 14)
 ax.set_xlabel("Sentiment", fontsize = 15, labelpad = 20)
 ax.set_ylabel("Density", fontsize = 15, labelpad = 20)
-
 plt.savefig("sentiment.jpg")
-#plt.show()
-
-
-# In[395]:
-
 
 #Plot distribution of sentiments scores (without sentiment = 0) 
 fig, ax = plt.subplots(figsize = (15, 10))
-sns.distplot(twitter[twitter["sentiment"] != 0]["sentiment"],
-             bins = n_bins, color = "darkgrey", kde_kws = {"linewidth": 2})
-
+sns.distplot(twitter[twitter["sentiment"] != 0]["sentiment"], bins = n_bins, color = "darkgrey", kde_kws = {"linewidth": 2})
 ax.tick_params(axis = "both", labelsize = 14)
 ax.set_xlabel("Sentiment", fontsize = 15, labelpad = 20)
 ax.set_ylabel("Density", fontsize = 15, labelpad = 20)
-
 plt.savefig("sentiment_no0.jpg")
-#plt.show()
 
 
-# #### (ii) Understand correlation and significance between features and sentiment
-
-# In[398]:
-
-
+#(ii) Understand correlation and significance between features and sentiment
 #Descriptive statistics for all features
-round(data.describe(), 2)
-
-
-# In[390]:
-
+print(round(data.describe(), 2))
 
 #Plot heatmap of correlations between features
 plt.figure(figsize = (14, 12))
 plt.subplots(figsize = (20, 20))
-ax = sns.heatmap(data.iloc[:, np.r_[2:17, 18]].corr(), square = True, annot = True, center = 0,                 cmap = sns.diverging_palette(145, 280, s = 85, l = 25, n = 80))
-
+ax = sns.heatmap(data.iloc[:, np.r_[2:17, 18]].corr(), square = True, annot = True, center = 0, \
+    cmap = sns.diverging_palette(145, 280, s = 85, l = 25, n = 80))
 plt.savefig("heatmap.jpg")
 
-
-# In[391]:
-
-
 #Pair plots for selected features
-sns.pairplot(data.iloc[:, np.r_[2:7,8,10,13,16,18]], kind = "reg",
-             plot_kws = {"line_kws": {"color": "#69479b"}}, corner = True)
-
+sns.pairplot(data.iloc[:, np.r_[2:7,8,10,13,16,18]], kind = "reg",\
+    plot_kws = {"line_kws": {"color": "#69479b"}}, corner = True)
 plt.savefig("pairs.jpg")
-
-
-# In[376]:
 
 
 #Perform F-test to test null hypothesis
@@ -258,11 +193,7 @@ print("F-values: ", f_reg[0])
 print("p-values: ", f_reg[1])
 
 
-# #### (iii) Calculate mean sentiment score per LGA
-
-# In[364]:
-
-
+#(iii) Calculate mean sentiment score per LGA
 #Build LGA polygons
 lga_polygon = {}
 for lga in data.iterrows():
@@ -288,11 +219,7 @@ data = pd.merge(data, lga_meanSent, on = "lga_code", how = "outer")
 print("LGA w data: ", data["sentiment"].count())
 
 
-# #### (iv) Export geoJSON for choropleth
-
-# In[291]:
-
-
+#(iv) Export geoJSON for choropleth
 #Format data as geoJSON
 features = data["lga_polygon"].apply(lambda row: Polygon(row[0][0])).to_dict()
 properties = data.fillna("").drop(["lga_polygon"], axis = 1).to_dict("index")
@@ -309,22 +236,14 @@ with open("choropleth.geojson", "w") as file:
     json.dump(feature_collection, file)
 
 
-# ### Topic Analysis
+##### Topic Analysis #####
 
-# #### (i) Lexical Categorisation
-
-# In[ ]:
-
-
+#(i) Lexical Categorisation
 #Calculate lexical category scores of each tweet
 twitter_dropNaN = twitter.dropna().copy()
 lexicon = Empath()
-twitter["category_scores"] = twitter_dropNaN["tokenized_text"].apply(lambda tweet: 
-                                                                     lexicon.analyze(tweet, normalize = True))
-
-
-# In[404]:
-
+twitter["category_scores"] = twitter_dropNaN["tokenized_text"].apply(lambda tweet: \
+    lexicon.analyze(tweet, normalize = True))
 
 #Extract most likely lexical category
 def max_category(cat_scores):
@@ -344,19 +263,15 @@ def max_category(cat_scores):
         
     return max_cat
 
-twitter_dropna["max_category"] = twitter_dropna["category_scores"].apply(max_category)
+twitter_dropNaN["max_category"] = twitter_dropNaN["category_scores"].apply(max_category)
 #Output list of categories sorted by frequency count
-print(twitter_dropna.groupby("max_category")["max_category"].count().sort_values(ascending = False))
+print(twitter_dropNaN.groupby("max_category")["max_category"].count().sort_values(ascending = False))
 
 #Extract top 10 topics/counts to JSON
-twitter_dropna.groupby("max_category")    ["max_category"].count().sort_values(ascending = False).nlargest(10).to_json("top10_topics.json")
+twitter_dropNaN.groupby("max_category")["max_category"].count().sort_values(ascending = False).nlargest(10).to_json("top10_topics.json")
 
 
-# #### (ii) Latent Dirichlet Allocation (LDA)
-
-# In[412]:
-
-
+#(ii) Latent Dirichlet Allocation (LDA)
 #Lemmatize tokenized tweet text
 def lemmatize(text):
     """
@@ -390,11 +305,6 @@ def lemmatize(text):
     return text_lemma
 
 twitter_dropNaN["lemmatize"] = twitter_dropNaN["tokenized_text"].apply(lemmatize)
-twitter_dropNaN
-
-
-# In[424]:
-
 
 #Create term dictionary from tokenized text
 num_topics = 10
@@ -407,23 +317,11 @@ bow_corpus = [dictionary.doc2bow(text) for text in twitter_dropNaN["lemmatize"]]
 tfidf = TfidfModel(bow_corpus)
 tfidf_corpus = tfidf[bow_corpus] #(word#, tf-idf)
 
-
-# In[425]:
-
-
 #Train LDA model w BOW corpus
 lda_bow = LdaModel(bow_corpus, num_topics = num_topics, id2word = dictionary, passes = 20)
 
-
-# In[426]:
-
-
 #Train LDA model w TF-IDF corpus
 lda_tfidf = LdaModel(tfidf_corpus, num_topics = num_topics, id2word = dictionary, passes = 20)
-
-
-# In[436]:
-
 
 #Obtain top topics from trained LDA model
 bow_topTopics = lda_bow.top_topics(bow_corpus)
@@ -434,7 +332,6 @@ tfidf_topTopics = lda_tfidf.top_topics(tfidf_corpus)
 #Average topic coherence - sum of topic coherences of all topics, divided by the number of topics
 avg_topicCoherence_bow = sum([topic[1] for topic in bow_topTopics]) / num_topics
 print("Average Topic Coherence BOW: ", avg_topicCoherence_bow, "\n")
-
 for index, topic in lda_bow.print_topics(-1):
     print('Topic: {} \nWord: {}\n'.format(index, topic))
 
@@ -443,7 +340,5 @@ print("-"*50)
 #LDA TF-IDF Output
 avg_topicCoherence_tfidf = sum([topic[1] for topic in tfidf_topTopics]) / num_topics
 print("Average Topic Coherence TF-IDF: ", avg_topicCoherence_tfidf, "\n")
-
 for index, topic in lda_tfidf.print_topics(-1):
     print('Topic: {} \nWord: {}\n'.format(index, topic))
-
