@@ -1,8 +1,6 @@
 const API_KEY = "pk.eyJ1IjoiZXpnYWxsbzg3IiwiYSI6ImNraWlqOWNkZzBhMTEyeW9kZTFsYWV2eXMifQ.FIAMf-ix0ER-CwPLhc02xg"
 
 var state_count = "http://" + ip_addr+ "/api/dashboard/stateCounts"
-console.log(state_count);
-
 var map_data = "http://"+ip_addr+"/api/dashboard/locationCounts"
 var daily_count = "http://"+ip_addr+"/api/dashboard/dailyCount"
 var hourly_count = "http://"+ip_addr+"/api/dashboard/hourlyCount"

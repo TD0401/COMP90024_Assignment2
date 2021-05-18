@@ -1,11 +1,9 @@
 const API_KEY = "pk.eyJ1IjoiZXpnYWxsbzg3IiwiYSI6ImNraWlqOWNkZzBhMTEyeW9kZTFsYWV2eXMifQ.FIAMf-ix0ER-CwPLhc02xg"
 
-var state_count = "http://127.0.0.1:5000/stateCounts"
-console.log(state_count);
-
-var map_data = "http://127.0.0.1:5000/locationCounts"
-var daily_count = "http://127.0.0.1:5000/dailyCount"
-var hourly_count = "http://127.0.0.1:5000/hourlyCount"
+var state_count = "http://" + ip_addr + "/api/dashboard/stateCounts"
+var map_data = "http://"+ ip_addr +"/api/dashboard/locationCounts"
+var daily_count = "http://"+ ip_addr +"/api/dashboard/dailyCount"
+var hourly_count = "http://"+ ip_addr +"/api/dashboard/hourlyCount"
 
 
 function init(){
