@@ -9,28 +9,16 @@ var hourly_count = "http://"+ ip_addr +"/api/dashboard/hourlyCount"
 function init(){
     
   // Read samples.json
-  d3.json("static/data/plotlysamples.json").then((jsonObject) =>{
+
     d3.json(state_count).then((statesObject)=>{
-      
+
       console.log(statesObject);
-      // console.log(statesObject.map(object => object.state));
+
       d3.select("#selState").selectAll("option")
           .data(statesObject)
           .enter()
           .append('option')
           .html(statesObject => statesObject.state);
-      
-      // //////   DUMMY \\\\\\\\\\\\\\\\\\\\\\\\\
-      // console.log("DUMMY DATA")
-          
-      // add all of the IDs to the drop down menu
-      // d3.select("#selDataset").selectAll("option")
-      //     .data(jsonObject.samples)
-      //     .enter()
-      //     .append('option')
-      //     .html(samples => samples.id);
-      
-      // plotlyPlot("940");  
       
       stateCountPlot();
       daysPlotly("WA");
@@ -40,10 +28,10 @@ function init(){
       d3.selectAll("#selState").on("change", updatePlotly);
       
     });     
-  })
+
 }
 
-init()
+
 
 //                                   UPDATE  PLOT                          \\
 // This function is called when a dropdown menu item is selected
@@ -51,8 +39,7 @@ function updatePlotly() {
   // Read samples.json     
   // Use D3 to select the dropdown menu for IDs
   var state = d3.select("#selState").property("value");
-  // statePlotly(datasetID);
-  
+
   daysPlotly(state);
   hoursPlotly(state);
       
@@ -70,7 +57,7 @@ function plotlyPlot(id){
       
         var filteredData = jsonObject.samples.filter(data => data.id.toString() === id);
         // console.log(filteredData)
-        // console.log(jsonObject) 
+        // console.log(jsonObject)
         
         var sample_values = filteredData[0].sample_values  
         // console.log(sample_values);
@@ -371,23 +358,16 @@ function hoursPlotly(state){
 
 //////////////////////            MAP Cluster         \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
-// Store our API endpoint inside queryUrl
-// var queryUrl = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/significant_month.geojson"
+function map_load(){
+    url = map_data + "?skip=0";
 
-// Perform a GET request to the query URL
-d3.json(map_data).then((data) =>{
-  
-  // console.log("INITIAL LOG");
-  // console.log(data);
-
-  // Once we get a response, send the data.features object to the createFeatures function
-  // array of json objects 
-  // var dataArray = data.features
-  // console.log(dataArray);
-
-  createFeatures(data);
-
-});
+    d3.json(url).then((data) =>{
+         console.log("INITIAL LOG"  );
+         console.log(data);
+         myMap = createFeatures(data);
+         addFeatures(myMap);
+    });
+}
 
 function getColour(count) {
   // console.log(count);
@@ -418,12 +398,50 @@ function getColour(count) {
   }
 }
 
+function sleep(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function addFeatures(myMap,twitData) {
+    count_success = 0 ;
+    for ( i = 1 ; i < 1000 ; i++){
+        url = map_data + "?skip=" + (i*5000)
+        d3.json(url).then((twitData) =>{
+           console.log("FURTHER LOG" + i );
+           console.log(twitData);
+
+          function onEachFeature(feature, layer) {
+            layer.bindPopup("<p>" + feature.properties.place +
+              "</p><hr><p>" + feature.properties.count + "</p>");
+          }
+
+          // Create a GeoJSON layer containing the features array on the earthquakeData object
+          // Run the onEachFeature function once for each piece of data in the array
+          var twitts = L.geoJSON(twitData, {
+            pointToLayer: function (feature, latlng) {
+              var geojsonMarkerOptions = {
+                  radius: feature.properties.count/10000,
+                  fillColor: getColour(feature.properties.count),
+                  // color: 'white',
+                  weight: 1,
+                  opacity: 1,
+                  fillOpacity: 1
+              };
+              return L.circleMarker(latlng, geojsonMarkerOptions)
+            },
+
+            onEachFeature: onEachFeature
+          }).addTo(myMap);
+          count_success++;
+        });
+        if(count_success%3 == 0 )
+            await sleep(5000);
+    }
+
+}
 
 
 function createFeatures(twitData) {
-
-  // console.log("CREATE FEATURES");
-  // console.log(twitData);
   // Define a function we want to run once for each feature in the features array
   // Give each feature a popup describing the place and time of the earthquake
   function onEachFeature(feature, layer) {
@@ -451,7 +469,7 @@ function createFeatures(twitData) {
   });
   
   // Sending our earthquakes layer to the createMap function
-  createMap(twitts);
+  return createMap(twitts);
 }
 
 function createMap(twitter) {
@@ -499,5 +517,15 @@ function createMap(twitter) {
     // Add the layer control to the map
     L.control.layers(baseMaps, overlayMaps, {
       collapsed: false
-    }).addTo(myMap); 
+    }).addTo(myMap);
+
+    return myMap;
 }
+
+
+function callsequence(){
+    init();
+    map_load();
+}
+
+callsequence();

@@ -1,12 +1,13 @@
 from flask import Flask, jsonify
 from flask import json
 from flask_cors import CORS
+from flask import request
 import requests
 
 
 # initializing flask, setting up CORS to run on different ips
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"*": {"origins": "*"}})
 
 # setting up couch properties like base url with ip, database doc url, authorization key
 headers = {'Authorization': "Basic YWRtaW46bXJjcGFzc3dvcmRjb3VjaA=="}
@@ -48,8 +49,9 @@ def marker_cluster():
     :return: json data for lat lng wise counts
     """
 
-    limit = 1000
-    skip = 0
+    limit = 5000
+    skip_qs = request.args.get('skip', 0)
+    skip = int(skip_qs)
     geoJson = []
     while True:
         url = base_url + database_doc_url + "/countByLatLng?reduce=true&group=true&update=lazy&skip=%s&limit=%s" % (
@@ -90,7 +92,7 @@ def day_count():
     :return: json data for state vs day wise count
     """
 
-    limit = 49
+    limit = 100
     skip = 0
     url = base_url + database_doc_url + "/countByDay?reduce=true&group=true&update=lazy&skip=%s&limit=%s" % (
     skip, limit)
@@ -120,7 +122,7 @@ def hour_count():
     :return: json data for state vs hourly count
     """
 
-    limit = 144
+    limit = 200
     skip = 0
     url = base_url + database_doc_url + "/countByHour?reduce=true&group=true&update=lazy&skip=%s&limit=%s" % (
     skip, limit)
