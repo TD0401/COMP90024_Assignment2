@@ -7,7 +7,12 @@ var hourly_count = "http://"+ ip_addr +"/api/dashboard/hourlyCount"
 
 
 function init(){
+
+  // Read samples.json
+
     d3.json(state_count).then((statesObject)=>{
+
+      console.log(statesObject);
 
       d3.select("#selState").selectAll("option")
           .data(statesObject)
@@ -15,7 +20,7 @@ function init(){
           .append('option')
           .html(statesObject => statesObject.state);
 
-      stateCountPlot();
+      stateCountPlot(statesObject);
       daysPlotly(statesObject[0].state);
       hoursPlotly(statesObject[0].state);
 
@@ -26,9 +31,12 @@ function init(){
 
 }
 
-//                                   UPDATE  PLOT
+
+
+//                                   UPDATE  PLOT                          \\
 // This function is called when a dropdown menu item is selected
 function updatePlotly() {
+  // Read samples.json
   // Use D3 to select the dropdown menu for IDs
   var state = d3.select("#selState").property("value");
 
@@ -117,8 +125,8 @@ function plotlyPlot(id){
 };
 /////////////////////////////////////      END DUMMY FUNCTION         \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
-function stateCountPlot() {
-  d3.json(state_count).then((statesObject)=>{
+function stateCountPlot(statesObject) {
+
 
 
     sorted = statesObject.sort((a, b) => b.value - a.value).reverse();
@@ -181,7 +189,7 @@ function stateCountPlot() {
     // Render the plot to the div tag with id "bar"
     Plotly.newPlot("horzBar", dataBar, layout);
 
-  });
+
 }
 
 
@@ -354,8 +362,6 @@ function map_load(){
     url = map_data + "?skip=0";
 
     d3.json(url).then((data) =>{
-         console.log("INITIAL LOG"  );
-         console.log(data);
          myMap = createFeatures(data);
          addFeatures(myMap);
     });
@@ -395,13 +401,11 @@ function sleep(ms) {
 }
 
 async function addFeatures(myMap,twitData) {
-    count_success = 0 ;
-    for ( i = 1 ; i < 1000 ; i++){
-        url = map_data + "?skip=" + (i*5000)
+
+    for ( i = 1 ; i < 10 ; i++){
+        url = map_data + "?skip=" + i
         d3.json(url).then((twitData) =>{
            console.log("FURTHER LOG" + i );
-           console.log(twitData);
-
           function onEachFeature(feature, layer) {
             layer.bindPopup("<p>" + feature.properties.place +
               "</p><hr><p>" + feature.properties.count + "</p>");
@@ -424,10 +428,12 @@ async function addFeatures(myMap,twitData) {
 
             onEachFeature: onEachFeature
           }).addTo(myMap);
-          count_success++;
         });
-        if(count_success%3 == 0 )
-            await sleep(5000);
+
+        await sleep(10000);
+
+
+
     }
 
 }
@@ -447,7 +453,7 @@ function createFeatures(twitData) {
   var twitts = L.geoJSON(twitData, {
     pointToLayer: function (feature, latlng) {
       var geojsonMarkerOptions = {
-          radius: feature.properties.count/200,
+          radius: feature.properties.count/10000,
           fillColor: getColour(feature.properties.count),
           // color: 'white',
           weight: 1,

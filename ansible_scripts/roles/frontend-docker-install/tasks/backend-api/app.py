@@ -3,11 +3,14 @@ from flask import json
 from flask_cors import CORS
 from flask import request
 import requests
-
+import couchdb
 
 # initializing flask, setting up CORS to run on different ips
 app = Flask(__name__)
 CORS(app, resources={r"*": {"origins": "*"}})
+couch_url = "http://admin:mrcpasswordcouch@172.26.130.129:5984/"
+couch = couchdb.Server(couch_url)
+db = couch['parsed_data']
 
 # setting up couch properties like base url with ip, database doc url, authorization key
 headers = {'Authorization': "Basic YWRtaW46bXJjcGFzc3dvcmRjb3VjaA=="}
@@ -49,38 +52,42 @@ def marker_cluster():
     :return: json data for lat lng wise counts
     """
 
-    limit = 5000
+    limit = 1
     skip_qs = request.args.get('skip', 0)
     skip = int(skip_qs)
     geoJson = []
-    while True:
-        url = base_url + database_doc_url + "/countByLatLng?reduce=true&group=true&update=lazy&skip=%s&limit=%s" % (
-        skip, limit)
-        ""
-        r = requests.get(url, headers=headers)
-        if r.status_code == 200:
-            if len(r.text) > 0:
-                data = json.loads(r.text)
-                for dictionary in data['rows']:
-                    # first dictionary key
-                    elements = dictionary['key']
-                    lat = elements[0]
-                    lng = elements[1]
-                    place = elements[2]
+    count = 1
+    while count < 6:
+        mango_query = {
+            "selector": {"id": {"$gt": None}},
+            "limit": 1,
+            "skip": skip
+        }
+        status, headers, data = db.resource.post_json('_find', mango_query)
+        if data is not None and data['docs'] is not None and len(data['docs']) > 0:
+            for data_row in data['docs'][0]["rows"]:
 
-                    # second dictionary key
-                    value = dictionary['value']
+                # first dictionary key
+                elements = data_row['key']
+                lat = elements[0]
+                lng = elements[1]
+                place = elements[2]
 
-                    geojson_1 = {
-                        "geometry": {"type": "Point", "coordinates": [lat, lng]},
-                        "properties": {"count": value, "place": place},
-                        "type": "Feature"
-                    }
+                # second dictionary key
+                value = data_row['value']
 
-                    geoJson.append(geojson_1)
+                geojson_1 = {
+                    "geometry": {"type": "Point", "coordinates": [lat, lng]},
+                    "properties": {"count": value, "place": place},
+                    "type": "Feature"
+                }
 
-                skip += limit
-            break
+                geoJson.append(geojson_1)
+
+
+            else:
+                break
+        count += 1
 
     return jsonify(geoJson)
 
