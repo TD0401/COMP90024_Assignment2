@@ -12,8 +12,6 @@ function init(){
 
     d3.json(state_count).then((statesObject)=>{
 
-      console.log(statesObject);
-
       d3.select("#selState").selectAll("option")
           .data(statesObject)
           .enter()
@@ -47,92 +45,14 @@ function updatePlotly() {
 
 
 /////////////////////////////////////      Horizontal Bar Chart         \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-/////////////////////////////////////      DUMMY FUNCTION        \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
-function plotlyPlot(id){
-
-    d3.json("static/data/plotlysamples.json").then((jsonObject) =>{
-
-        ////////////////////       CHARTING VARIABLES     \\\\\\\\\\\\\\\\\\\\\\\\\
-
-        var filteredData = jsonObject.samples.filter(data => data.id.toString() === id);
-        // console.log(filteredData)
-        // console.log(jsonObject)
-
-        var sample_values = filteredData[0].sample_values
-        // console.log(sample_values);
-
-        var otu_ids = filteredData[0].otu_ids
-        var otu_labels = filteredData[0].otu_labels
-
-        // zipping sample values and OTU ids so that I can know which ID belongs to which value when sorting
-        // index 0 = sample_values ; index 1 = OTU_id
-        var zip = sample_values.map((sv, i) =>{
-            return [sv, otu_ids[i], otu_labels[i]]
-        });
-
-        // console.log(zip);
-
-        //sorting by sample values
-        var clean_data = zip.sort((a, b) => b[0] - a[0]).slice(0,10).reverse();
-        // console.log("THIS IS CLEAN_DATA")
-        // console.log(clean_data);
-
-        sampleValues = clean_data.map(object => object[0]);
-        console.log(sampleValues);
-
-        outIDs = clean_data.map(object => `OTU ${object[1]}`);
-        // console.log("THIS Y AXIS")
-        // console.log(outIDs);
-
-        hover_text = clean_data.map(object => object[2]);
-
-      //   bar and pie chart for Dummy Graphs \\
-
-        // Trace1 for bar charts
-        var trace1 = {
-            x: sampleValues,
-            y: outIDs,
-            text: hover_text,
-            type: "bar",
-            orientation: "h",
-        };
-
-        var trace2 = {
-            values: sampleValues,
-            labels: outIDs,
-            hovertext: hover_text,
-            type: "pie",
-        };
-
-        // data
-        var dataBar = [trace1];
-        var dataPie = [trace2];
-
-        // Apply the group bar mode to the layout
-        var layout = {
-            title: `Top 10 OTU IDs for ID ${id}`,
-            plot_bgcolor:"#dbf6e9",
-            paper_bgcolor:"#dbf6e9"
-        };
-
-        // Render the plot to the div tag with id "bar"
-        Plotly.newPlot("horzBar", dataBar, layout);
-
-        // Render the plot to the div tag with id "pie"
-        Plotly.newPlot("topicsPie", dataPie, layout);
-    });
-};
-/////////////////////////////////////      END DUMMY FUNCTION         \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
 function stateCountPlot(statesObject) {
 
 
 
     sorted = statesObject.sort((a, b) => b.value - a.value).reverse();
-    // console.log(sorted);
     var x_axis = sorted.map(object => object.value);
-    // console.log(test);
     var y_axis = sorted.map(object => object.state);
 
 
@@ -163,6 +83,7 @@ function stateCountPlot(statesObject) {
           size: 25
         }
       },
+      width: 500,
       plot_bgcolor:"rgba(0,0,0,0)",
       paper_bgcolor:"rgba(0,0,0,0)",
       xaxis: {
@@ -200,12 +121,9 @@ function daysPlotly(state) {
   d3.json(daily_count).then((object) => {
 
     var filteredData = object.filter(data => data.state.toString() === state);
-    // console.log(filteredData);
 
     var x_axis = ["Mon", "Tues", "Wed", "Thurs", "Fri", "Sat", "Sun"];
 
-    // var y_axis = filteredData.map(data => data.value);
-    // console.log(y_axis);
 
     var mon = filteredData.filter(data=> data.day.toString() === "Mon")
     var monData = mon[0].value;
@@ -252,7 +170,7 @@ function daysPlotly(state) {
           size: 25,
         }
       },
-
+      width: 500,
       showlegend: false,
       xaxis: {
         tickangle: -45,
@@ -289,13 +207,8 @@ function hoursPlotly(state){
   d3.json(hourly_count).then((object) => {
 
     var filteredData = object.filter(data => data.state.toString() === state);
-    console.log(filteredData);
-
     var x_axis = filteredData.map(data => data.hour);
-    console.log(x_axis);
-
     var y_axis = filteredData.map(data => data.value);
-    console.log(y_axis);
 
     var data = [
       {
@@ -352,7 +265,37 @@ function hoursPlotly(state){
 
 
 // ///////////////////////////          Topic Analysis       \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+var topicData = "static/data/topic.json";
+d3.json(topicData).then((data) =>{
+  var data = [{
+    values: Object.values(data),
+    labels: Object.keys(data),
+    name: 'Tweet Count',
+    hoverinfo: 'value',
+    hole: .7,
+    type: 'pie',
+    textinfo: "label+percent",
+    automargin: true,
+    textposition: "outside",
+  }];
 
+  var layout = {
+    title: {
+      text:  `Topic Analysis`,
+      font:{
+        family: 'Verdana, sans-serif',
+        size: 25
+      },
+    },
+    showlegend: false,
+    height: 600,
+    width: 600,
+    plot_bgcolor:"rgba(0,0,0,0)",
+    paper_bgcolor:"rgba(0,0,0,0)"
+  }
+
+  Plotly.newPlot('topicsPie', data, layout);
+})
 
 
 
@@ -368,7 +311,6 @@ function map_load(){
 }
 
 function getColour(count) {
-  // console.log(count);
   switch (count) {
     case count > 100:
       return "#ce1212";
@@ -405,7 +347,6 @@ async function addFeatures(myMap,twitData) {
     for ( i = 1 ; i < 10 ; i++){
         url = map_data + "?skip=" + i
         d3.json(url).then((twitData) =>{
-           console.log("FURTHER LOG" + i );
           function onEachFeature(feature, layer) {
             layer.bindPopup("<p>" + feature.properties.place +
               "</p><hr><p>" + feature.properties.count + "</p>");
@@ -472,16 +413,6 @@ function createFeatures(twitData) {
 
 function createMap(twitter) {
 
-    // Define streetmap and darkmap layers
-    var streetmap = L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
-      attribution: "© <a href='https://www.mapbox.com/about/maps/'>Mapbox</a> © <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> <strong><a href='https://www.mapbox.com/map-feedback/' target='_blank'>Improve this map</a></strong>",
-      tileSize: 512,
-      maxZoom: 18,
-      zoomOffset: -1,
-      id: "mapbox/streets-v11",
-      accessToken: API_KEY
-    });
-
     var darkmap = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
       attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
       maxZoom: 18,
@@ -491,11 +422,9 @@ function createMap(twitter) {
 
     // Define a baseMaps object to hold our base layers
     var baseMaps = {
-      "Street Map": streetmap,
       "Dark Map": darkmap
     };
 
-    // console.log(earthquakes);
     // Create overlay object to hold our overlay layer
     var overlayMaps = {
       Tweets: twitter
@@ -507,7 +436,7 @@ function createMap(twitter) {
         -30.2744, 140.7751
       ],
       zoom: 4,
-      layers: [streetmap, twitter]
+      layers: [darkmap, twitter]
     });
 
     // Create a layer control

@@ -43,83 +43,83 @@
             </ul>
         </div>
     </nav>
-    
+
     <div class="container">
       <!-- ROW 1 -->
       <div class="row">
-        <div class="col-4s" id ="tweetDashboard"><h1>Tweets Dashboard</h1></div>
+        <div class="col-12-lg" id ="tweetDashboard"><h1>Tweets Dashboard</h1></div>
         <!-- <div class="col-1">
           <div class="well">
             <p>Year:<p>
             <select id="selYear"></select>
           </div> -->
         </div>
-        <div class="col-1">
+        <!-- <div class="col-1">
+          <div class="well">
+            <p>State:</p>
+            <select id="selState"></select>
+          </div>
+        </div> -->
+      </div>
+      <!-- ROW 2 -->
+      <div class="row" id="row2">
+        <div class="col-5" id="horzBar">
+        </div>
+        <div class="col-7" id="mapCluster">
+        </div>
+      </div>
+      <!-- ROW 3 -->
+      <!-- <hr> -->
+      <div class="row" id="rowW">
+        <div class="col-1" id="colW">
           <div class="well">
             <p>State:</p>
             <select id="selState"></select>
           </div>
         </div>
-        <!-- /// BEGIN TEST BOX \\\ -->
-        <!-- <div class="col-1">
-          <div class="well">
-            <p>Test Subject ID No.:</p>
-            <select id="selDataset"></select>
-          </div>
-        </div> -->
-        <!-- /// END TEST BOX \\\ -->
       </div>
-      <!-- ROW 2 -->
-      <div class="row">
-        <div class="col-4" id="horzBar">
-        </div>
-        <div class="col-8" id="mapCluster">
-        </div>
-      </div>
-      <!-- ROW 3 -->
-      <hr>
       <div class="row" id="row3">
-        <div class="col-5" id="dayBars1">
+        <div class="col-6" id="dayBars1">
         </div>
         <div class="col-6" id= "hourBars2">
         </div>
       </div>
+      <!-- <hr> -->
       <!-- ROW 4 -->
       <div class="row" id="row4">
         <div class="col-4" id="topicsPie">
         </div>
       </div>
     </div>
-    
+
     <!-- Scripts -->
     <!-- Bootstrapp -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.min.js" integrity="sha384-lpyLfhYuitXl2zRZ5Bn2fqnhNAKOAaM/0Kr9laMspuaMiZfGmfwRNFh8HlMy49eQ" crossorigin="anonymous"></script>
-    
+
     <!-- D3 This one works with plotly JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.5.0/d3.js"></script>
     <!-- <script src="https://d3js.org/d3.v4.min.js"></script> -->
-    
-    
+
+
 
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
-    
+
     <!-- Leaflet js -->
     <script src="https://unpkg.com/leaflet@1.3.3/dist/leaflet.js"
     integrity="sha512-tAGcCfR4Sc5ZP5ZoVz0quoZDYX5aCtEm/eu1KhSLj2c9eFrylXZknQYmxUssFaVJKvvc0dJQixhGjG2yXWiV9Q=="
     crossorigin=""></script>
-    
+
     <!-- Marker Cluster JS -->
     <script type="text/javascript" src="https://unpkg.com/leaflet.markercluster@1.0.3/dist/leaflet.markercluster.js"></script>
-    
+
     <!-- plotly -->
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 
     <!-- OUR JS -->
     <script type="text/javascript" src="static/js/ip.js"></script>
     <script type="text/javascript" src="static/js/dashboard.js"></script>
-    <!-- <script src="{{url_for('static', filename='js/dashboard.js')}}"></script> -->
 
   </body>
 </html>

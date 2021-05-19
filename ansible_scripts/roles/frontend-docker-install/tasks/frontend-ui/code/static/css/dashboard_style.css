@@ -4,31 +4,14 @@ body {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    height: 100%
+    height: 100%;
 }
-
-.container{
+/* .container{
     margin-left: auto;
     margin-right: auto;
     padding-left: auto;
-    padding-right: auto;
-}
-
-#dayBars1{
-    margin-left: auto;
-    margin-right: auto;
-}
-
-#horzBar{
-    margin-left: auto;
-    margin-right: auto;
-}
-
-#hourBars2 {
-    margin-left: auto;
-    margin-right: auto;
-}
-
+    padding-right: 40px;
+} */
 #tweetDashboard {
     margin-top: 10px;
     margin-bottom: 10px;
@@ -37,22 +20,25 @@ body {
     padding-top: 3px;
     font-family: Verdana, sans-serif;
 }
-
-#row3 {
-    margin-top: 5px;
+#horzBar{
+    margin-left: 80px;
+    /* margin-right: auto; */
 }
-
-#mapCluster {
+#row3 {
+    margin-top: 15px;
     margin-left: auto;
     margin-right: auto;
+}
+#mapCluster {
+    /* margin-left: 80px; */
+    margin-right: 80px;
     height: 500px;
-    width: 900px;
+    width: 800px;
 }
-
-#topicsPie {
-    height: 300px;
+#row4 {
+    margin-top: 5px;
+    margin-bottom: 5px;
 }
-
 select{
     margin-left: auto;
     margin-right: auto;
@@ -67,7 +53,17 @@ select{
     color: whitesmoke;
     outline: none;
 }
-
+#rowW {
+    margin-left: 100px;
+    /* margin-right: auto; */
+    margin-top: 20px;
+    margin-bottom: 2px;
+}
+#colW{
+    margin-left: 650px;
+    margin-right: auto;
+    margin-top: 35px;
+}
 .well {
     margin-left: auto;
     margin-right: auto;
@@ -79,4 +75,20 @@ select{
     font-weight: bold;
     outline: rgb(16, 17, 17);
     height: 50px;
+}
+#dayBars1{
+    margin-left: 60px;
+    margin-right: auto;
+    width: 700px;
+    padding-left: 20px;
+}
+#hourBars2 {
+    margin-left: auto;
+    margin-right: 60px;
+    padding-right: 40px;
+}
+#topicsPie {
+    margin-left: 510px;
+    /* margin-right: auto; */
+    margin-top: 25px;
 }
