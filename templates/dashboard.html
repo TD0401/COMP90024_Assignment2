@@ -37,6 +37,9 @@
                         <a class="nav-link active" aria-current="page" href="dashboard.html">Dashboard</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="map.html">Map Dashboard</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="team.html">Team</a>
                     </li>
                 </div>
@@ -47,47 +50,41 @@
     <div class="container">
       <!-- ROW 1 -->
       <div class="row">
-        <div class="col-12-lg" id ="tweetDashboard"><h1>Tweets Dashboard</h1></div>
-        <!-- <div class="col-1">
-          <div class="well">
-            <p>Year:<p>
-            <select id="selYear"></select>
-          </div> -->
+        <div class="col-12-lg" id ="tweetDashboard"><h1>Tweets Dashboard</h1>
         </div>
-        <!-- <div class="col-1">
-          <div class="well">
-            <p>State:</p>
-            <select id="selState"></select>
-          </div>
-        </div> -->
       </div>
+
       <!-- ROW 2 -->
-      <div class="row" id="row2">
-        <div class="col-5" id="horzBar">
+      <div class="row plot_rows" >
+
+        <div class="col-6"  id="horzBar">
         </div>
-        <div class="col-7" id="mapCluster">
+        <div class="col-6"  id="topicsPie">
         </div>
       </div>
       <!-- ROW 3 -->
       <!-- <hr> -->
-      <div class="row" id="rowW">
-        <div class="col-1" id="colW">
-          <div class="well">
-            <p>State:</p>
-            <select id="selState"></select>
-          </div>
+      <div class="row plot_rows" id="rowW">
+        <div class="col-1" id="colW" style="width:200px;">
+
+            <span style="color:#fff; float:left">State:</span>
+             <span><select id="selState"></select></span>
+
         </div>
       </div>
-      <div class="row" id="row3">
-        <div class="col-6" id="dayBars1">
+      <div class="row plot_rows" >
+        <div class="col-5" id="dayBars1">
         </div>
-        <div class="col-6" id= "hourBars2">
+        <div class="col-5" id= "hourBars2">
         </div>
       </div>
       <!-- <hr> -->
       <!-- ROW 4 -->
-      <div class="row" id="row4">
-        <div class="col-4" id="topicsPie">
+      <div class="row map_row" >
+        <div class="col-12-lg map_title"><h4>Map cluster for tweets originating from different location</h4>
+        </div>
+          <br/>
+        <div class="col-4" id="mapCluster">
         </div>
       </div>
     </div>

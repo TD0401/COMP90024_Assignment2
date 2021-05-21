@@ -17,6 +17,15 @@ headers = {'Authorization': "Basic YWRtaW46bXJjcGFzc3dvcmRjb3VjaA=="}
 base_url = "http://172.26.130.129:5984"
 database_doc_url = "/twitterfeed/_design/TweetCountLatLng/_view"
 
+state_code ={ "VIC":"VID",
+              "NSW":"NSX",
+              "QLD":"QLE",
+              "WA":"WB",
+              "TAS":"TAT",
+              "NT":"NU",
+              "SA":"SB"
+              }
+
 
 @app.route("/api/dashboard/stateCounts", methods=['GET'])
 def state_counts():
@@ -150,6 +159,52 @@ def hour_count():
         hourly_count.append(summary)
 
     return jsonify(hourly_count)
+
+
+@app.route("/api/dashboard/locationCountsByState", methods=['GET'])
+def marker_cluster_statewise():
+    """
+    This api returns number of tweets aggregated over lat lng
+    rounded to 3 digits in couch map reduce
+    :return: json data for lat lng wise counts
+    """
+    limit = 1000
+    stateCode = request.args.get('stateCode', 0)
+    skip = 0
+    geoJson = []
+    count = 1
+    endKey = state_code.get(stateCode)
+    while count < 10:
+        url = base_url + database_doc_url + "/countByLatLngReduced?reduce=true&group=true&update=lazy&skip=%s&limit=%s&startkey=[\"%s\"]&endkey=[\"%s\"]" % (
+            skip, limit, stateCode, endKey)
+        r = requests.get(url, headers=headers)
+        data = json.loads(r.text)
+        if data is not None and data['rows'] is not None and len(data['rows']) > 0:
+            for element in data['rows']:
+
+                # first dictionary key
+                elements = element['key']
+                lat = elements[1]
+                lng = elements[2]
+                place = elements[3]
+
+                # second dictionary key
+                value = element['value']
+
+                geojson_1 = {
+                    "geometry": {"type": "Point", "coordinates": [lat, lng]},
+                    "properties": {"count": value, "place": place},
+                    "type": "Feature"
+                }
+
+                geoJson.append(geojson_1)
+
+            skip += limit
+        else:
+            break
+        count += 1
+
+    return jsonify(geoJson)
 
 
 if __name__ == '__main__':
