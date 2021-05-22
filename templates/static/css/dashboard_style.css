@@ -1,3 +1,8 @@
+@font-face {
+  font-family: 'roboto-med';
+  src: url("/static/fonts/Roboto-Medium.ttf");
+}
+
 body {
     background-color: #000;
     /*background-image: url("/static/imgs/bg8.jpg");*/
@@ -5,7 +10,7 @@ body {
     background-position: center;
     background-repeat: no-repeat;
     height: 100%;
-    font-family: "SF Pro Text","SF Pro Icons","Helvetica Neue","Helvetica","Arial",sans-serif
+    font-family: 'roboto-med';
 }
  .container{
     width:90%;
@@ -87,7 +92,7 @@ body {
 }
 
 .map_title{
-    margin-left:30%;
+    margin-left:25%;
     margin-bottom: 2%;
     color:#fff;
     font-weight: thin;

@@ -33,3 +33,14 @@ curl --location --request GET 'http://172.26.130.129:5984/twitterfeed/_design/co
 --header 'Content-Type: application/json' \
 --header 'Authorization: Basic YWRtaW46bXJjcGFzc3dvcmRjb3VjaA=='
 
+
+count of lat lngs grouped by state
+this has a startkey and endkey param which takes values like VIC, QLD etc which are different statenames
+all the startkey should have correct statecode, all the endkey should have the last character of the statecode modifed to next alphabet in the series.
+This helps to find all the keys that start with a particular statecode and ends when the match is no more found.
+Please note if the start and end key doesnt match as a regex - for ex VI[C] and VI[D] then the curl returns all the data
+curl --location -g --request GET 'http://172.26.130.129:5984/twitterfeed/_design/TweetCountLatLng/_view/countByLatLngReduced?reduce=true&group=true&update=lazy&limit=1000&startkey=[%22VIC%22]&endkey=[%22VID%22]&skip=1000' \
+--header 'accept: application/json' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Basic YWRtaW46bXJjcGFzc3dvcmRjb3VjaA=='
+

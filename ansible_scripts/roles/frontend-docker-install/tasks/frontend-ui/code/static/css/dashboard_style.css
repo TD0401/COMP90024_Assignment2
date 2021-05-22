@@ -1,44 +1,98 @@
 body {
-    /* background-color: #dbf6e9; */
-    background-image: url("/static/imgs/bg8.jpg");
+    background-color: #000;
+    /*background-image: url("/static/imgs/bg8.jpg");*/
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     height: 100%;
+    font-family: "SF Pro Text","SF Pro Icons","Helvetica Neue","Helvetica","Arial",sans-serif
 }
-/* .container{
-    margin-left: auto;
-    margin-right: auto;
-    padding-left: auto;
-    padding-right: 40px;
-} */
-#tweetDashboard {
-    margin-top: 10px;
-    margin-bottom: 10px;
-    /* padding-right: 3px; */
+ .container{
+    width:90%;
+}
+#mapTweetDashboard {
+    margin-left:25%;
+    margin-top: 5%;
+    margin-bottom: 2%;
     padding-left: 3px;
     padding-top: 3px;
     font-family: Verdana, sans-serif;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-image: linear-gradient(225deg, #ff5ea7 36.04%, #010fcb 88.83%, #ff6530 220.3%);
+    width:60%;
 }
+
+#tweetDashboard{
+    margin-left:30%;
+    margin-top: 5%;
+    margin-bottom: 2%;
+    font-family: Verdana, sans-serif;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-image: linear-gradient(225deg, #ff5ea7 36.04%, #010fcb 88.83%, #ff6530 220.3%);
+    width:40%;
+}
+
 #horzBar{
-    margin-left: 80px;
-    /* margin-right: auto; */
+    margin-left: 5%;
+    width: 35%;
+
 }
-#row3 {
-    margin-top: 15px;
+#topicsPie {
     margin-left: auto;
-    margin-right: auto;
+
 }
+#dayBars1{
+    margin-left: 5%;
+    width: 35%;
+    padding-left: 20px;
+}
+#hourBars2 {
+    margin-left: auto;
+    margin-right: 5%;
+
+}
+
+
 #mapCluster {
-    /* margin-left: 80px; */
+    margin-left:20%;
     margin-right: 80px;
     height: 500px;
     width: 800px;
 }
-#row4 {
-    margin-top: 5px;
-    margin-bottom: 5px;
+
+.mapCluster {
+    margin-left:20%;
+    margin-top: 2%;
+    margin-bottom: 5%;
+    height: 500px;
+    width: 800px;
 }
+
+.map_title2{
+    margin-left:40%;
+    margin-bottom: 2%;
+    color:#fff;
+    font-weight: thin;
+}
+
+
+.plot_rows {
+    margin-top: 2%;
+}
+
+.map_row{
+    margin-top: 10%;
+}
+
+.map_title{
+    margin-left:30%;
+    margin-bottom: 2%;
+    color:#fff;
+    font-weight: thin;
+}
+
 select{
     margin-left: auto;
     margin-right: auto;
@@ -49,46 +103,17 @@ select{
     /* background-color: transparent; */
     border: none;
     font-size: large;
-    background-color:  rgb(26, 88, 114);
-    color: whitesmoke;
+    background-color:  '#000';
+    color: '#fff';
     outline: none;
 }
 #rowW {
-    margin-left: 100px;
-    /* margin-right: auto; */
-    margin-top: 20px;
-    margin-bottom: 2px;
+    margin-top: 3%;
+    margin-bottom: 3%;
 }
 #colW{
-    margin-left: 650px;
-    margin-right: auto;
-    margin-top: 35px;
-}
-.well {
     margin-left: auto;
     margin-right: auto;
-    background-color: aliceblue;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    padding-bottom: auto;
-    padding-left: 10px;
-    font-weight: bold;
-    outline: rgb(16, 17, 17);
-    height: 50px;
 }
-#dayBars1{
-    margin-left: 60px;
-    margin-right: auto;
-    width: 700px;
-    padding-left: 20px;
-}
-#hourBars2 {
-    margin-left: auto;
-    margin-right: 60px;
-    padding-right: 40px;
-}
-#topicsPie {
-    margin-left: 510px;
-    /* margin-right: auto; */
-    margin-top: 25px;
-}
+
+

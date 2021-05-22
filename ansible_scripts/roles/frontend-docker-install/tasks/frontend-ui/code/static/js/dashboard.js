@@ -19,8 +19,8 @@ function init(){
           .html(statesObject => statesObject.state);
 
       stateCountPlot(statesObject);
-      daysPlotly(statesObject[0].state);
-      hoursPlotly(statesObject[0].state);
+      daysPlotly($("#selState").prop("selectedIndex", 0).val());
+      hoursPlotly($("#selState").prop("selectedIndex", 0).val());
 
       // Call updatePlotly() when a change takes place to the DOM
       d3.selectAll("#selState").on("change", updatePlotly);
@@ -66,7 +66,7 @@ function stateCountPlot(statesObject) {
         // color: '#6ddccf'
         // color: 'rgb(26, 88, 114)'
         // color: '#008891'
-        color: '#c6ebc9'
+        color: '#26a334'
         // width: 1
       }
     };
@@ -80,8 +80,10 @@ function stateCountPlot(statesObject) {
         text:  `Tweet Count per State`,
         font:{
           family: 'Verdana, sans-serif',
-          size: 25
+          size: 25,
+          color:'#fff'
         }
+
       },
       width: 500,
       plot_bgcolor:"rgba(0,0,0,0)",
@@ -91,8 +93,12 @@ function stateCountPlot(statesObject) {
           text:  "Total Tweet Count ",
           font:{
             family: 'Verdana, sans-serif',
-            size: 17
+            size: 17,
+            color: '#a1a1a6'
           }
+        },
+        tickfont : {
+            color : '#fff'
         }
       },
       yaxis: {
@@ -101,10 +107,14 @@ function stateCountPlot(statesObject) {
           text:  "State",
           font:{
             family: 'Verdana, sans-serif',
-            size: 17
+            size: 17,
+            color: '#a1a1a6'
           }
+        },
+        tickfont : {
+            color : '#fff'
         }
-      },
+      }
     };
 
     // Render the plot to the div tag with id "bar"
@@ -157,7 +167,7 @@ function daysPlotly(state) {
           // color: '#d8f8b7'
           // color: '#e8e9a1'
           // color: '#c6ebc9'
-          color: '#008891'
+          color: '#ff5ea7'
           // width: 1
         }
       }];
@@ -168,6 +178,7 @@ function daysPlotly(state) {
         font:{
           family: 'Verdana, sans-serif',
           size: 25,
+          color: '#fff'
         }
       },
       width: 500,
@@ -178,8 +189,12 @@ function daysPlotly(state) {
           text:  "Day of Week ",
           font:{
             family: 'Verdana, sans-serif',
-            size: 17
+            size: 17,
+             color: '#a1a1a6'
           }
+        },
+        tickfont : {
+            color : '#fff'
         }
       },
       yaxis: {
@@ -189,8 +204,12 @@ function daysPlotly(state) {
           text:  "Count",
           font:{
             family: 'Verdana, sans-serif',
-            size: 17
+            size: 17,
+             color: '#a1a1a6'
           }
+        },
+        tickfont : {
+            color : '#fff'
         }
       },
       bargap :0.05,
@@ -218,7 +237,7 @@ function hoursPlotly(state){
         marker: {
           // color: '#70af85'
           // color: '#008891'
-          color: 'rgb(26, 88, 114)'
+          color: '#fe9439'
         }
       }];
 
@@ -227,7 +246,8 @@ function hoursPlotly(state){
         text:  `Hourly Tweet Count for ${state}`,
         font:{
           family: 'Verdana, sans-serif',
-          size: 25
+          size: 25,
+          color: '#fff'
         }
       },
       showlegend: false,
@@ -237,8 +257,12 @@ function hoursPlotly(state){
           text:  "Hour of the Day (24hr)",
           font:{
             family: 'Verdana, sans-serif',
-            size: 17
+            size: 17,
+             color: '#a1a1a6'
           }
+        },
+        tickfont : {
+            color : '#fff'
         }
       },
       yaxis: {
@@ -248,8 +272,12 @@ function hoursPlotly(state){
           text:  "Count",
           font:{
             family: 'Verdana, sans-serif',
-            size: 17
+            size: 17,
+             color: '#a1a1a6'
           }
+        },
+        tickfont : {
+            color : '#fff'
         }
       },
       bargap :0.05,
@@ -275,6 +303,7 @@ d3.json(topicData).then((data) =>{
     hole: .7,
     type: 'pie',
     textinfo: "label+percent",
+    textfont:{ color:'#fff'},
     automargin: true,
     textposition: "outside",
   }];
@@ -284,12 +313,14 @@ d3.json(topicData).then((data) =>{
       text:  `Topic Analysis`,
       font:{
         family: 'Verdana, sans-serif',
-        size: 25
+        size: 25,
+        color:'#fff'
       },
     },
+
     showlegend: false,
-    height: 600,
-    width: 600,
+    height: 500,
+    width: 500,
     plot_bgcolor:"rgba(0,0,0,0)",
     paper_bgcolor:"rgba(0,0,0,0)"
   }

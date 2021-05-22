@@ -8,7 +8,7 @@
 - name: copy code file
   become: yes
   copy:
-    src: /usr/local/etc/nginx/nginx.conf
+    src: nginx.conf
     dest: /etc/nginx/nginx.conf
     owner: root
     group: root

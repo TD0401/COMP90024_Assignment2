@@ -115,10 +115,10 @@ L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{z}/{x}/{y}?acce
 }).addTo(myMap);
 
 // Load in geojson data
-var geoData = "static/data/Median_Household_Income_2016.geojson";
+//var geoData = "static/data/Median_Household_Income_2016.geojson";
 // console.log(geoData);
-var geoData2 = "static/data/newchoropleth.geojson"
-var geoData3 = "static/data/choropleth3.geojson"
+//var geoData2 = "static/data/newchoropleth.geojson"
+var geoData3 = "/static/data/choropleth3.geojson"
 
 
 var geojson;

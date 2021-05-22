@@ -75,7 +75,7 @@ function stateCountPlot(statesObject) {
       title: {
         text:  `Tweet Count per State`,
         font:{
-          family: 'Verdana, sans-serif',
+          family: 'roboto-med',
           size: 25,
           color:'#fff'
         }
@@ -88,7 +88,7 @@ function stateCountPlot(statesObject) {
         title: {
           text:  "Total Tweet Count ",
           font:{
-            family: 'Verdana, sans-serif',
+            family: 'roboto-med',
             size: 17,
             color: '#a1a1a6'
           }
@@ -102,7 +102,7 @@ function stateCountPlot(statesObject) {
         title: {
           text:  "State",
           font:{
-            family: 'Verdana, sans-serif',
+            family: 'roboto-med',
             size: 17,
             color: '#a1a1a6'
           }
@@ -172,7 +172,7 @@ function daysPlotly(state) {
       title: {
         text: `Daily Tweet Count for ${state}`,
         font:{
-          family: 'Verdana, sans-serif',
+         family: 'roboto-med',
           size: 25,
           color: '#fff'
         }
@@ -184,7 +184,7 @@ function daysPlotly(state) {
         title: {
           text:  "Day of Week ",
           font:{
-            family: 'Verdana, sans-serif',
+            family: 'roboto-med',
             size: 17,
              color: '#a1a1a6'
           }
@@ -199,7 +199,7 @@ function daysPlotly(state) {
         title: {
           text:  "Count",
           font:{
-            family: 'Verdana, sans-serif',
+            family: 'roboto-med',
             size: 17,
              color: '#a1a1a6'
           }
@@ -241,7 +241,7 @@ function hoursPlotly(state){
       title: {
         text:  `Hourly Tweet Count for ${state}`,
         font:{
-          family: 'Verdana, sans-serif',
+          family: 'roboto-med',
           size: 25,
           color: '#fff'
         }
@@ -252,7 +252,7 @@ function hoursPlotly(state){
         title: {
           text:  "Hour of the Day (24hr)",
           font:{
-            family: 'Verdana, sans-serif',
+            family: 'roboto-med',
             size: 17,
              color: '#a1a1a6'
           }
@@ -267,7 +267,7 @@ function hoursPlotly(state){
         title: {
           text:  "Count",
           font:{
-            family: 'Verdana, sans-serif',
+            family: 'roboto-med',
             size: 17,
              color: '#a1a1a6'
           }
@@ -308,7 +308,7 @@ d3.json(topicData).then((data) =>{
     title: {
       text:  `Topic Analysis`,
       font:{
-        family: 'Verdana, sans-serif',
+        family:'roboto-med',
         size: 25,
         color:'#fff'
       },
