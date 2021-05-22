@@ -63,11 +63,7 @@ function stateCountPlot(statesObject) {
       type: "bar",
       orientation: "h",
       marker: {
-        // color: '#6ddccf'
-        // color: 'rgb(26, 88, 114)'
-        // color: '#008891'
-        color: '#26a334'
-        // width: 1
+         color: '#26a334'
       }    
     };
 
