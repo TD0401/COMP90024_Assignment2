@@ -21,14 +21,14 @@
   <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
-          <a class="navbar-brand" href="#">Project Name</a>
+          <a class="navbar-brand" href="#">Cloud Analytics</a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
             <ul class = "navbar-nav ml-auto">
                 <div class="collapse navbar-collapse ml-auto" id="navbarSupportedContent">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="index.html">Home</a>
+                        <a class="nav-link active" aria-current="page" href="index.html">About</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="choropleth.html">Choropleth</a>
@@ -46,8 +46,25 @@
             </ul>
         </div>
     </nav>
-
-    
+    <div class="container">
+      <p>
+        Life in Australia has changed immeasurably over the past 18 months as a result of the global pandemic and the subsequent shifts in human behaviour across not only Australia, but the globe.  With enforced lockdowns and disruptions to the lives andhabits of Australians across all major cities there has been an increasing amount of attention from governments and statisticians on the mental well-being of the populous, as well as the key factors influencing their lives.
+      </p>
+      <p>
+        In this project, cloud computing infrastructure was utilised to assist in capturing and analysing tweets. Our objective was the following:
+      </p>
+      <p>
+        (i) Deploy a cloud-based solution that exploits virtual machines (VMs) on the Melbourne Research Cloud (MRC) and that can scale dynamically as required
+      </p>
+      <p>
+        (ii) Harvest tweets using both the Streaming and the Search API interfaces. Multiple Twitter Harvesters were implemented to collect tweets from each major city in Australia. 
+        Our amalgamated tweets were then stored in our CouchDB database ready to be used in our analysis.
+      </p>
+      <p>
+        (iii) Developed a range of analytical scenarios using both the MapReduce functionality in CouchDB through our Tweet Dashboard as well as additional analytical techniques through Python scripts.  
+        The Twitter data collected was thencompared to the data from the Australian Urban Research Infrastructure Network (AURIN)
+      </p>
+    </div>  
     <!-- Scripts -->
     <!-- Bootstrapp -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>

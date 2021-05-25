@@ -47,3 +47,9 @@ html {
   float: right;
 }
 
+.navbar-brand {
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-image: linear-gradient(225deg, #ff5ea7 36.04%, #ff6530 220.3%);
+}
+

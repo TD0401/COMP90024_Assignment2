@@ -4,5 +4,28 @@ body {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    height: 100%
+    height: 100%;
+    text-align: center;
+}
+
+p {
+    font-family: Verdana, sans-serif; 
+    color: azure;
+    margin-top: 20px;
+    font-size: 20px;
+    padding-left: 50px;
+    padding-right: 50px;
+    text-align: justify
+}
+
+.container {
+    margin-top: 60px;
+    margin-left: auto;
+    margin-right: auto; 
+}
+
+.navbar-brand {
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-image: linear-gradient(225deg, #ff5ea7 36.04%, #ff6530 220.3%);
 }

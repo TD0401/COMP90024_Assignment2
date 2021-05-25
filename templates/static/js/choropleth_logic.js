@@ -151,8 +151,9 @@ d3.json(geoData3, function(data) {
 
     // Binding a pop-up to each layer
     onEachFeature: function(feature, layer) {
-      layer.bindPopup("Sentiment value: " + feature.properties.sentiment + "<br>Median Household Income:<br>" +
-        "$" + feature.properties.median_income);
+      layer.bindPopup("Sentiment value: " + feature.properties.sentiment + "<br/>Median Income: " +
+        "$" + feature.properties.median_income + "<br/>Sleep: " + feature.properties.sleep + "<br/>Unemployment Rate: " + feature.properties.unemploy_rate + 
+        "<br/>Work Life: " + feature.properties.worklife);
     }
   }).addTo(myMap);
 
