@@ -99,17 +99,18 @@ const API_KEY = "pk.eyJ1IjoiZXpnYWxsbzg3IiwiYSI6ImNraWlqOWNkZzBhMTEyeW9kZTFsYWV2
 // ///////////////////////////////////////////////           FUNCTIONING CHOROPLETH \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 // / Creating map object
 var myMap = L.map("map", {
-  center: [-30.2744, 140.7751],
-  zoom: 4
+  center: [-37.2744, 145.7751],
+  zoom: 7
 });
 
 // Adding tile layer
-L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
-  attribution: "© <a href='https://www.mapbox.com/about/maps/'>Mapbox</a> © <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> <strong><a href='https://www.mapbox.com/map-feedback/' target='_blank'>Improve this map</a></strong>",
+L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
+  attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
   tileSize: 512,
   maxZoom: 18,
   zoomOffset: -1,
-  id: "mapbox/streets-v11",
+  // id: "mapbox/streets-v11",
+  id: "dark-v10",
   accessToken: API_KEY
 }).addTo(myMap);
 
@@ -117,7 +118,7 @@ L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_toke
 //var geoData = "static/data/Median_Household_Income_2016.geojson";
 // console.log(geoData);
 //var geoData2 = "static/data/newchoropleth.geojson"
-var geoData3 = "/static/data/choropleth3.geojson"
+var geoData3 = "static/data/choropleth3.geojson"
 
 
 var geojson;
@@ -134,7 +135,7 @@ d3.json(geoData3, function(data) {
     valueProperty: "sentiment",
 
     // Set color scale
-    scale: ["#ffffb2", "#b10026"],
+    scale: ["#d1d9d9","#9fe6a0", "#aa2ee6"],
 
     // Number of breaks in step range
     steps: 10,
@@ -150,8 +151,9 @@ d3.json(geoData3, function(data) {
 
     // Binding a pop-up to each layer
     onEachFeature: function(feature, layer) {
-      layer.bindPopup("Sentiment value: " + feature.properties.sentiment + "<br>Median Household Income:<br>" +
-        "$" + feature.properties.median_income);
+      layer.bindPopup("Sentiment value: " + feature.properties.sentiment + "<br/>Median Income: " +
+        "$" + feature.properties.median_income + "<br/>Sleep: " + feature.properties.sleep + "<br/>Unemployment Rate: " + feature.properties.unemploy_rate + 
+        "<br/>Work Life: " + feature.properties.worklife);
     }
   }).addTo(myMap);
 

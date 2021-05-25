@@ -1,7 +1,7 @@
 ---
 - hosts: localhost
   vars:
-    ansible_python_interpreter: /Users/ankitadhar/miniforge3/bin/python3.9
+    ansible_python_interpreter: /usr/local/bin/python3
   vars_files:
     - host_vars/harvester-vars.yaml
   gather_facts: true
