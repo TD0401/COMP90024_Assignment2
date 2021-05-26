@@ -108,3 +108,45 @@ the requests correctly and act as a web server.
     - https://developer.twitter.com/en/docs/twitter-api/v1
     - https://docs.tweepy.org/en/latest/
 7. Ansible - https://docs.ansible.com/ansible/latest/  
+
+
+## Running the Ansible Scripts
+To run the Ansible scripts following things need to be done - 
+0. The python path on every machine is different, so you need to update the python path in each playbook to match your machine's python path - ansible_python_interpreter: /usr/local/bin/python3
+1. download the open stack RC file from MRC and save in the folder ansible_scripts/
+2. create a key pair on MRC with the name new_key_sm and download the private key file and save in the folder ansible_scripts
+3. You can run the scripts using command, this will ask two passwords, the first password is of MRC and second is local machine's password to run some of the commands in sudo (become = yes) mode. 
+    - sh run_couch.sh
+4. We ran couchDB script twice, to launch two servers, but i have updated the vars file to deploy two couchdb together. 
+5. Once the CouchDB instance is created, some of the manual steps are done. This can be automated as well through. 
+    Ansible. To attach the volume we login to MRC instance and follow some commands:      
+        ssh -i ~/.ssh/new_key_sem.pem ubuntu@<ip-address>. 
+        sudo mkfs -t ext4 /dev/vdb  
+        sudo mkdir /data 
+        sudo mount /dev/vdb /data 
+        vi /etc/fstab 
+    
+    Go to insert mode, add below line and save the file 
+        /dev/vdb /data auto defaults 0 0
+
+    Stop CouchDB and Continue with following commands to update the data folder for CouchDB
+        sudo systemctl stop couchdb
+        sudo mkdir /data/couchdbData
+        sudo chown -r couchdb:couchdb /data/couchdbData
+        sudo vi /opt/couchdb/etc/default.ini
+
+    Go to Insert mode and Update path of these two variables
+        database_dir = /data/couchdbData
+        view_index_dir = /data/couchdbData
+    
+    Save the file and exit vi and then start CouchDB via command
+        sudo systemctl start couchdb 
+6. After couchDB setup, get the ip, update the files with correct ip and then run harvester.sh and frontend.sh
+    - sh run_harvester.sh
+    - sh run_frontend.sh
+    
+   files to be updated for couchdb ip are 
+    - ansible_scripts/roles/harvester-docker-install/tasks/harvester/TwitterHarvester.py
+    - ansible_scripts/roles/harvester-docker-install/tasks/analysis/analysis.py
+    - ansible_scripts/roles/frontend-docker-install/tasks/backend-api/app.py
+ 
