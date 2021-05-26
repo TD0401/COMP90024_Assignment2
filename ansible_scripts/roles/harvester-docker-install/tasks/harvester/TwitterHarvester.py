@@ -72,10 +72,6 @@ token_list = [
         "GEO_NAME": "BRISBANE"
     }
 
-
-
-
-
 ]
 #COUCH_URL = "http://admin:password@127.0.0.1:5984/"
 COUCH_URL = "http://admin:mrcpasswordcouch@172.26.134.25:5984/"

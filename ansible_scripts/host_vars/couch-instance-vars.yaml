@@ -6,6 +6,8 @@ availability_zone: melbourne-qh2-uom
 volumes:
   - vol_name: couchDB2
     vol_size: 50
+  - vol_name: couchDB
+    vol_size: 50
 
 
   
@@ -49,6 +51,9 @@ security_groups:
 instances:
   - name: inst-couchDB2
     volume: ['couchDB2']
+    instance_flavor: uom.mse.2c9g
+  - name: inst-couchDB
+    volume: ['couchDB']
     instance_flavor: uom.mse.2c9g
 
 
